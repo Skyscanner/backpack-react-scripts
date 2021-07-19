@@ -187,32 +187,32 @@ module.exports = function (webpackEnv) {
     ].filter(Boolean);
     if (preProcessor) {
       loaders.push(
-        ...[{
-          loader: require.resolve('resolve-url-loader'),
-          options: {
-            sourceMap: isEnvProduction
-              ? shouldUseSourceMap
-              : isEnvDevelopment,
-            root: paths.appSrc,
-          },
-        },
-        // Because sass-loader is the most expensive, so put cache-loader here to only cache sass-loader
-        // Note that there is an overhead for saving the reading and saving the cache file, so only use this loader to cache expensive loaders.
-        // shouldUseCacheLoader && {
-        //   loader: require.resolve('cache-loader'),
-        //   options: {
-        //     cacheDirectory: paths.cacheLoaderDir,
-        //   },
-        // },
-        {
-          loader: require.resolve(preProcessor),
-          options: {
-            ...preProcessorOptions,
-            ...{
-              sourceMap: true,
+        ...[
+          {
+            loader: require.resolve('resolve-url-loader'),
+            options: {
+              sourceMap: isEnvProduction ? shouldUseSourceMap : isEnvDevelopment,
+              root: paths.appSrc,
             },
           },
-        }].filter(Boolean),
+          // Because sass-loader is the most expensive, so put cache-loader here to only cache sass-loader
+          // Note that there is an overhead for saving the reading and saving the cache file, so only use this loader to cache expensive loaders.
+          // shouldUseCacheLoader && {
+          //   loader: require.resolve('cache-loader'),
+          //   options: {
+          //     cacheDirectory: paths.cacheLoaderDir,
+          //   },
+          // },
+          {
+            loader: require.resolve(preProcessor),
+            options: {
+              ...preProcessorOptions,
+              ...{
+                sourceMap: true,
+              },
+            },
+          },
+        ].filter(Boolean),
       );
     }
     return loaders;
