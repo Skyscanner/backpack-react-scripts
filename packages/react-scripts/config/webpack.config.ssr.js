@@ -137,7 +137,7 @@ module.exports = function (webpackEnv) {
 
   // SHOULD_USE_CACHE_LOADER - this environment variable is not from Create React App side, it shouldn't be added to `env.js` file to get its value, and it should be deleted when cache strategy is ready for all the web teams at Skyscanner
   // Warning: cache-loader won't be needed when webpack 5 is there
-  // const shouldUseCacheLoader = isEnvProduction && process.env.SHOULD_USE_CACHE_LOADER;
+  // const shouldUseCacheLoader = process.env.SHOULD_USE_CACHE_LOADER;
 
   // common function to get style loaders
   const getStyleLoaders = (
@@ -187,32 +187,32 @@ module.exports = function (webpackEnv) {
     ].filter(Boolean);
     if (preProcessor) {
       loaders.push(
-        ...[
-          {
-            loader: require.resolve('resolve-url-loader'),
-            options: {
-              sourceMap: isEnvProduction
-                ? shouldUseSourceMap
-                : isEnvDevelopment,
-              root: paths.appSrc,
+        ...[{
+          loader: require.resolve('resolve-url-loader'),
+          options: {
+            sourceMap: isEnvProduction
+              ? shouldUseSourceMap
+              : isEnvDevelopment,
+            root: paths.appSrc,
+          },
+        },
+        // Because sass-loader is the most expensive, so put cache-loader here to only cache sass-loader
+        // Note that there is an overhead for saving the reading and saving the cache file, so only use this loader to cache expensive loaders.
+        // shouldUseCacheLoader && {
+        //   loader: require.resolve('cache-loader'),
+        //   options: {
+        //     cacheDirectory: paths.cacheLoaderDir,
+        //   },
+        // },
+        {
+          loader: require.resolve(preProcessor),
+          options: {
+            ...preProcessorOptions,
+            ...{
+              sourceMap: true,
             },
           },
-          // shouldUseCacheLoader && {
-          //   loader: require.resolve('cache-loader'),
-          //   options: {
-          //     cacheDirectory: paths.cacheLoaderDir,
-          //   },
-          // },
-          {
-            loader: require.resolve(preProcessor),
-            options: {
-              ...preProcessorOptions,
-              ...{
-                sourceMap: true,
-              },
-            },
-          },
-        ].filter(Boolean)
+        }].filter(Boolean),
       );
     }
     return loaders;
