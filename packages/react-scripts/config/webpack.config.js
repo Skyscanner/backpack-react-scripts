@@ -192,8 +192,6 @@ module.exports = function (webpackEnv) {
     if (preProcessor) {
       loaders.push(
         ...[
-          // Moving cache-loader above resolve-url-loader is because its cache files are small and it is faster to read the cache files, and it saves more time than cache-loader below resolve-url-loader, we can still speed up the process of compiling sass to css since sass-loader is the most expensive
-          // Note that there is an overhead for saving the reading and saving the cache file, so only use this loader to cache expensive loaders.
           shouldUseCacheLoader && {
             loader: require.resolve('cache-loader'),
             options: {
