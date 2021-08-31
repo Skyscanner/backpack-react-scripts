@@ -1,5 +1,9 @@
 # `backpack-react-scripts` Change Log
 
+## 9.3.1
+
+- Move `cache-loader` above `resolve-url-loader` to get the best performance
+
 ## 9.3.0
 
 - Apply `cache-loader` on CI
