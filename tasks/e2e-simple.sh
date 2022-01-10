@@ -125,11 +125,11 @@ cd ../..
 # Test local build command
 yarn build
 # Check for expected output
-exists build/web/*.html
-exists build/web/static/js/*.js
-exists build/web/static/css/*.css
-# exists build/web/static/media/*.svg
-exists build/web/favicon.ico
+exists build/*.html
+exists build/static/js/*.js
+exists build/static/css/*.css
+# exists build/static/media/*.svg
+exists build/favicon.ico
 
 # Run tests with CI flag
 CI=true yarn test
@@ -233,11 +233,11 @@ cd test-app
 # Test the build
 yarn build
 # Check for expected output
-exists build/web/*.html
-exists build/web/static/js/*.js
-exists build/web/static/css/*.css
-# exists build/web/static/media/*.svg
-exists build/web/favicon.ico
+exists build/*.html
+exists build/static/js/*.js
+exists build/static/css/*.css
+# exists build/static/media/*.svg
+exists build/favicon.ico
 
 # Run tests with CI flag
 CI=true yarn test
@@ -269,11 +269,11 @@ verify_module_scope
 # # Test the build
 # yarn build
 # # Check for expected output
-# exists build/web/*.html
-# exists build/web/static/js/*.js
-# exists build/web/static/css/*.css
-# # exists build/web/static/media/*.svg
-# exists build/web/favicon.ico
+# exists build/*.html
+# exists build/static/js/*.js
+# exists build/static/css/*.css
+# # exists build/static/media/*.svg
+# exists build/favicon.ico
 
 # # Run tests, overriding the watch option to disable it.
 # # `CI=true yarn test` won't work here because `yarn test` becomes just `jest`.

@@ -137,7 +137,7 @@ checkDependencies
 # ******************************************************************************
 
 cd "$temp_app_path"
-npx create-react-app test-use-npm-flag --use-npm --scripts-version=@skyscanner/backpack-react-scripts@9.1.0 --template @skyscanner/backpack
+npx create-react-app test-use-npm-flag --use-npm --scripts-version=@skyscanner/backpack-react-scripts --template @skyscanner/backpack
 cd test-use-npm-flag
 
 # Check corresponding scripts version is installed.
