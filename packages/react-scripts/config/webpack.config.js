@@ -61,7 +61,7 @@ const getCSSModuleLocalIdent = require('../utils/getCSSModuleLocalIdentWithProje
 );
 
 const sassFunctions = require('bpk-mixins/sass-functions');
-const camelCase = require('lodash/camelCase');
+// const camelCase = require('lodash/camelCase');
 const bpkReactScriptsConfig = appPackageJson['backpack-react-scripts'] || {};
 const customModuleRegexes = bpkReactScriptsConfig.babelIncludePrefixes
   ? bpkReactScriptsConfig.babelIncludePrefixes.map(
@@ -293,7 +293,7 @@ module.exports = function (webpackEnv) {
       // Prevents conflicts when multiple webpack runtimes (from different apps)
       // are used on the same page.
       // jsonpFunction: `webpackJsonp${appPackageJson.name}`,
-      jsonpFunction: camelCase(appPackageJson.name + 'JsonpCallback'),
+      // jsonpFunction: camelCase(appPackageJson.name + 'JsonpCallback'),
       // this defaults to 'window', but by setting it to 'this' then
       // module chunks which are built will work in web workers as well.
       globalObject: 'this',
