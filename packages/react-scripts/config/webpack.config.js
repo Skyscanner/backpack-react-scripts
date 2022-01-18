@@ -52,6 +52,8 @@ const jsWorkerPool = {
   workerParallelJobs: 50,
 };
 
+const testNum = 1;
+
 const appPackageJson = require(paths.appPackageJson);
 
 const getCSSModuleLocalIdent = require('../utils/getCSSModuleLocalIdentWithProjectName')(
