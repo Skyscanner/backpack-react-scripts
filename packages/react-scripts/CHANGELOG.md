@@ -9,7 +9,7 @@
 
 ## 9.5.1
 
-- Upgrade sass-loader to v10 to support to set threadpoolzise by configuring the UV_THREADPOOL_SIZE env var to improve the compiling performance
+- Upgraded `sass-loader` to `v^10.2.1`. to support to set threadpoolzise by configuring the UV_THREADPOOL_SIZE env var to improve the compiling performance
 
 ## 9.4.0
 
