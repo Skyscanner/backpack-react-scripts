@@ -8,6 +8,7 @@
 'use strict';
 
 const fs = require('fs');
+const path = require('path');
 const chalk = require('react-dev-utils/chalk');
 const paths = require('../../config/paths');
 const modules = require('../../config/modules');
@@ -83,6 +84,8 @@ module.exports = (resolve, rootDir, isEjecting) => {
       'jest-watch-typeahead/testname',
     ],
     resetMocks: true,
+    // Remove this when upgraded to Jest 28
+    resolver: path.join(__dirname, './customJestResolver.js'),
   };
   if (rootDir) {
     config.rootDir = rootDir;
