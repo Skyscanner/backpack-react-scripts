@@ -1,6 +1,5 @@
 # `backpack-react-scripts` Change Log
 
-
 ## 10.0.3
 
 - Add babel-istanbul-plugin to support collecting test coverage
