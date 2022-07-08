@@ -5,7 +5,6 @@
 
 - Add babel-istanbul-plugin to support collecting test coverage
 
-
 ## 10.0.2
 
 - Fix security issues
