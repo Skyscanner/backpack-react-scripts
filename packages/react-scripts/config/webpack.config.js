@@ -210,6 +210,8 @@ module.exports = function (webpackEnv) {
     return loaders;
   };
 
+  const a=1;
+
   return {
     mode: isEnvProduction ? 'production' : isEnvDevelopment && 'development',
     // Stop compilation early in production
