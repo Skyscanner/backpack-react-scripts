@@ -210,7 +210,8 @@ module.exports = function (webpackEnv) {
     return loaders;
   };
 
-  const a=1;
+  const bpkReactScriptsConfig = appPackageJson['backpack-react-scripts'] || {};
+  const appendTextContenthash = bpkReactScriptsConfig.appendTextContenthash || '';
 
   return {
     mode: isEnvProduction ? 'production' : isEnvDevelopment && 'development',
@@ -263,7 +264,7 @@ module.exports = function (webpackEnv) {
       futureEmitAssets: true,
       // There are also additional JS chunk files if you use code splitting.
       chunkFilename: isEnvProduction
-        ? 'static/js/[name].[contenthash:8].chunk.js'
+        ? `static/js/[name].[contenthash:8]${appendTextContenthash}.chunk.js`
         : isEnvDevelopment && 'static/js/[name].chunk.js',
       // webpack uses `publicPath` to determine where the app is being served from.
       // It requires a trailing slash, or the file assets will get an incorrect path.
