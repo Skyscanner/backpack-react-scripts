@@ -1,5 +1,9 @@
 # `backpack-react-scripts` Change Log
 
+## 10.1.0
+
+- Disable `loadable` in CSR build
+
 ## 10.0.4
 
 - Upgrade packages as many as possible in `react-scripts`

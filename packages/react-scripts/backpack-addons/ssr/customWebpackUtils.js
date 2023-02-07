@@ -1,3 +1,5 @@
+'use strict';
+
 const chalk = require('chalk');
 const formatWebpackMessages = require('react-dev-utils/formatWebpackMessages');
 const typescriptFormatter = require('react-dev-utils/typescriptFormatter');
