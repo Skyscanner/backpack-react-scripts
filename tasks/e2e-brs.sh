@@ -7,17 +7,10 @@ cd "$(dirname "$0")"
 # http://unix.stackexchange.com/a/84980
 temp_app_path=`mktemp -d 2>/dev/null || mktemp -d -t 'temp_app_path'`
 
-# Load functions for working with local NPM registry (Verdaccio)
-# source local-registry.sh
-
 function cleanup {
   echo 'Cleaning up.'
   cd "$root_path"
-  # Uncomment when snapshot testing is enabled by default:
-  # rm ./packages/react-scripts/template/src/__snapshots__/App.test.js.snap
   rm -rf "$temp_app_path"
-  # Restore the original NPM and Yarn registry URLs and stop Verdaccio
-  # stopLocalRegistry
 }
 
 # Error messages are redirected to stderr
@@ -49,9 +42,6 @@ trap 'set +x; handle_exit' SIGQUIT SIGTERM SIGINT SIGKILL SIGHUP
 
 # Echo every command being executed
 set -x
-
-# Start the local NPM registry
-# startLocalRegistry "$root_path"/tasks/verdaccio.yaml
 
 # Go to root
 cd ..
