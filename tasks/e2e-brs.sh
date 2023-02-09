@@ -8,7 +8,7 @@ cd "$(dirname "$0")"
 temp_app_path=`mktemp -d 2>/dev/null || mktemp -d -t 'temp_app_path'`
 
 # Load functions for working with local NPM registry (Verdaccio)
-source local-registry.sh
+# source local-registry.sh
 
 function cleanup {
   echo 'Cleaning up.'
@@ -17,7 +17,7 @@ function cleanup {
   # rm ./packages/react-scripts/template/src/__snapshots__/App.test.js.snap
   rm -rf "$temp_app_path"
   # Restore the original NPM and Yarn registry URLs and stop Verdaccio
-  stopLocalRegistry
+  # stopLocalRegistry
 }
 
 # Error messages are redirected to stderr
@@ -51,7 +51,7 @@ trap 'set +x; handle_exit' SIGQUIT SIGTERM SIGINT SIGKILL SIGHUP
 set -x
 
 # Start the local NPM registry
-startLocalRegistry "$root_path"/tasks/verdaccio.yaml
+# startLocalRegistry "$root_path"/tasks/verdaccio.yaml
 
 # Go to root
 cd ..
