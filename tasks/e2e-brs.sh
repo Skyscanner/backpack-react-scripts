@@ -65,7 +65,8 @@ npx create-react-app test-app --scripts-version=@skyscanner/backpack-react-scrip
 # Enter the app directory
 cd test-app
 
-npm i "$root_path"/packages/react-scripts/skyscanner-backpack-react-scripts-10.0.4.tgz
+PACKAGE_VERSION=$(node -p -e "require('$root_path/packages/react-scripts/package.json').version")
+npm i "$root_path"/packages/react-scripts/skyscanner-backpack-react-scripts-"$PACKAGE_VERSION".tgz
 
 # Test the build
 npm run build
