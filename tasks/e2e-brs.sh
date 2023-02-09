@@ -50,11 +50,14 @@ trap 'set +x; handle_exit' SIGQUIT SIGTERM SIGINT SIGKILL SIGHUP
 # Echo every command being executed
 set -x
 
+# Start the local NPM registry
+startLocalRegistry "$root_path"/tasks/verdaccio.yaml
+
 # Go to root
 cd ..
 root_path=$PWD
-ls -a
 
+# Pack PR version
 cd packages/react-scripts
 npm pack
 
@@ -65,6 +68,7 @@ npx create-react-app test-app --scripts-version=@skyscanner/backpack-react-scrip
 # Enter the app directory
 cd test-app
 
+# Intsall PR version
 PACKAGE_VERSION=$(node -p -e "require('$root_path/packages/react-scripts/package.json').version")
 npm i "$root_path"/packages/react-scripts/skyscanner-backpack-react-scripts-"$PACKAGE_VERSION".tgz
 
