@@ -53,8 +53,10 @@ set -x
 # Go to root
 cd ..
 root_path=$PWD
+ls -a
 
-npm pack --prefix packages/react-scripts
+cd packages/react-scripts
+npm pack
 
 # Install the app in a temporary location
 cd $temp_app_path
