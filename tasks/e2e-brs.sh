@@ -51,12 +51,13 @@ root_path=$PWD
 cd packages/react-scripts
 npm pack
 
-# Get the version
+# Get the version and move packed module to temp_app_path
 package_version=$(node -p -e "require('$root_path/packages/react-scripts/package.json').version")
+mv ./skyscanner-backpack-react-scripts-"$package_version".tgz $temp_app_path/
 
 # Install the app in a temporary location
 cd $temp_app_path
-npx create-react-app test-app --scripts-version="$root_path"/packages/react-scripts/skyscanner-backpack-react-scripts-"$package_version".tgz --template @skyscanner/backpack --use-npm
+npx create-react-app test-app --scripts-version=./skyscanner-backpack-react-scripts-"$package_version".tgz --template @skyscanner/backpack --use-npm
 
 # Enter the app directory
 cd test-app
