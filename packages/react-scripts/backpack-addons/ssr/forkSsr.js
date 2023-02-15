@@ -1,5 +1,3 @@
-'use strict';
-
 /**
  * This script runs a Webpack compiler to watch the SSR build. It is designed to
  * be run by child_process.fork from the start-ssr script.

@@ -1,5 +1,3 @@
-'use strict';
-
 const clearConsole = require('react-dev-utils/clearConsole');
 const chalk = require('chalk');
 
