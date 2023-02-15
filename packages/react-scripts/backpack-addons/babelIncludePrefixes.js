@@ -1,11 +1,11 @@
-"use strict";
+'use strict';
 
-const paths = require("../config/paths");
+const paths = require('../config/paths');
 const appPackageJson = require(paths.appPackageJson);
-const bpkReactScriptsConfig = appPackageJson["backpack-react-scripts"] || {};
+const bpkReactScriptsConfig = appPackageJson['backpack-react-scripts'] || {};
 const customModuleRegexes = bpkReactScriptsConfig.babelIncludePrefixes
   ? bpkReactScriptsConfig.babelIncludePrefixes.map(
-      (prefix) => new RegExp(`node_modules[\\/]${prefix}`)
+      prefix => new RegExp(`node_modules[\\/]${prefix}`)
     )
   : [];
 
@@ -13,6 +13,7 @@ const customModuleRegexes = bpkReactScriptsConfig.babelIncludePrefixes
 const backpackModulesRegex = /node_modules[\\/]bpk-/;
 const saddlebagModulesRegex = /node_modules[\\/]saddlebag-/;
 const scopedBackpackModulesRegex = /node_modules[\\/]@skyscanner[\\/]bpk-/;
+const backpackSinglePackageModulesRegex = /node_modules[\\/]@skyscanner[\\/]backpack-web/;
 
 module.exports = () => {
   return [
@@ -20,6 +21,7 @@ module.exports = () => {
     backpackModulesRegex,
     saddlebagModulesRegex,
     scopedBackpackModulesRegex,
+    backpackSinglePackageModulesRegex,
     ...customModuleRegexes,
   ];
 };

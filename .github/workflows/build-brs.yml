@@ -21,30 +21,6 @@ jobs:
         with:
           node-version: 16.x
 
-      - name: Run simple
+      - name: Run e2e
         run: |
-          tasks/e2e-simple.sh
-
-      - name: Run Installs
-        run: |
-          tasks/e2e-installs.sh
-
-      ## For now we don't need to worry about Kitchensink as this is also failing upstream and the functions is executes are not relevant
-
-      # - name: Run Kitchensink
-      #   shell: bash -l {0}
-      #   run: |
-      #     nvm use lts/erbium
-      #     tasks/e2e-kitchensink.sh
-
-      # - name: Run Kitchensink Eject
-      #   shell: bash -l {0}
-      #   run: |
-      #     nvm use lts/erbium
-      #     tasks/e2e-kitchensink-eject.sh
-
-      # - name: Run Behaviour
-      #   shell: bash -l {0}
-      #   run: |
-      #     nvm use lts/erbium
-      #     tasks/e2e-behavior.sh
+          tasks/e2e-brs.sh
