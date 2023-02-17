@@ -1,6 +1,6 @@
 # `backpack-react-scripts` Change Log
 
-## 10.1.0
+## 10.2.0
 
 - Disable `loadable` in CSR build
 
