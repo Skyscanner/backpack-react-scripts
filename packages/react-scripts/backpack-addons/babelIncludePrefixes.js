@@ -9,7 +9,6 @@ const customModuleRegexes = bpkReactScriptsConfig.babelIncludePrefixes
       if (prefix && (prefix.startsWith('.') || prefix.startsWith('/'))) {
         // if the prefixes starts with '.', '..' or '/', likes '../common'
         // it means is the relative path which doesn't need to be in the node_modules folder
-        console.log(path.resolve(paths.appPath, prefix));
         return path.resolve(paths.appPath, prefix);
       }
       return new RegExp(`node_modules[\\/]${prefix}`);
