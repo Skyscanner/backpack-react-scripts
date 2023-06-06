@@ -1,5 +1,9 @@
 # `backpack-react-scripts` Change Log
 
+## 10.2.1
+
+- Identify relative path in `babelIncludePrefixes`
+
 ## 10.2.0
 
 - Disable `loadable` in CSR build
