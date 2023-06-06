@@ -1,6 +1,6 @@
 # `backpack-react-scripts` Change Log
 
-## 10.2.1
+## 10.4.1
 
 - Identify relative path in `babelIncludePrefixes`
 
