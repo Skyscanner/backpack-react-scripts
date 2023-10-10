@@ -8,7 +8,7 @@ defaults:
   run:
     shell: bash -l {0}
 
-env: 
+env:
   CACHE_NAME: node-modules-cache
   BUILD_CACHE_NAME: build-cache
 
@@ -43,14 +43,14 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: 16.x
-      
+
       - name: Restore Cache
         uses: actions/cache/restore@v3.3.2
         id: npm-cache
         with:
           path: node_modules/
           key: ${{ env.CACHE_NAME }}-${{ hashFiles('packages/**') }}
-      
+
       - name: Run e2e
         run: tasks/e2e-brs.sh
 
@@ -64,7 +64,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: fork_cra5
-    
+
       - name: Use Node.js
         uses: actions/setup-node@v3
         with:
@@ -76,7 +76,7 @@ jobs:
         with:
           path: node_modules/
           key: ${{ env.CACHE_NAME }}-${{ hashFiles('packages/**') }}
-      
+
       - name: Build react-error-overlay
         run: |
           cd packages/react-error-overlay/
@@ -89,4 +89,3 @@ jobs:
           npm publish --tag alpha
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-          RELEASE_VERSION: ${{ github.event.release.tag_name }}
