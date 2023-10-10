@@ -3,6 +3,7 @@
  * be run by child_process.fork from the start-ssr script.
  */
 
+// eslint-disable-next-line strict
 const chalk = require('chalk');
 const fs = require('fs');
 const webpack = require('webpack');
