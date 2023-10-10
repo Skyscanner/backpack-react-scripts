@@ -6,5 +6,5 @@ const bpkReactScriptsConfig = appPackageJson['backpack-react-scripts'] || {};
 const ignoreCssWarnings = bpkReactScriptsConfig.ignoreCssWarnings || false;
 
 module.exports = {
-  ignoreOrder: ignoreCssWarnings
+  ignoreOrder: ignoreCssWarnings,
 };

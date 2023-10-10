@@ -7,10 +7,10 @@ const bpkReactScriptsConfig = appPackageJson['backpack-react-scripts'] || {};
 module.exports = {
   test: new RegExp(
     `(^|/)(${(bpkReactScriptsConfig.amdExcludes || [])
-    .concat('lodash')
-    .join('|')})(/|.|$)`
+      .concat('lodash')
+      .join('|')})(/|.|$)`
   ),
   parser: {
     amd: false,
-  }
-}; 
+  },
+};

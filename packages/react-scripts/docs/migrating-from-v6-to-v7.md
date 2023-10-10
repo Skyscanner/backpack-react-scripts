@@ -14,7 +14,7 @@ Like any major release, `backpack-react-scripts@7` contains a few breaking chang
 
 We have decoupled ESLint and Stylelint from this release. This is because the rate at which our configs (`eslint-config-skyscanner` and `stylelint-config-skyscanner`) change is much faster than the underlying functionality of `create-react-app`, causing unecessary churn.
 
-That means that your `npm run lint:js` and `npm run lint:scss` scripts will no longer work if on `eslint-config-skyscanner@^4` or `stylelint-config-skyscanner@^1`. 
+That means that your `npm run lint:js` and `npm run lint:scss` scripts will no longer work if on `eslint-config-skyscanner@^4` or `stylelint-config-skyscanner@^1`.
 
 If on these older versions of our Skyscanner linting configurations and you do not wish to upgrade in this change you will need to install their peer dependencies. It is however recommended to upgrade to the latest of each, where not only will this not be a problem but you will benefit from the latest linting features and improvements.
 

@@ -6,17 +6,17 @@ const bpkReactScriptsConfig = appPackageJson['backpack-react-scripts'] || {};
 
 const runtimeChunk = {
   runtimeChunk: bpkReactScriptsConfig.enableAutomaticChunking
-  ? {
-    name: entrypoint => `runtime-${entrypoint.name}`,
-  }
-  : false
-}
+    ? {
+        name: entrypoint => `runtime-${entrypoint.name}`,
+      }
+    : false,
+};
 
-const ssrRuntimeChunk = { 
+const ssrRuntimeChunk = {
   runtimeChunk: false,
-}
+};
 
 module.exports = {
   runtimeChunk,
-  ssrRuntimeChunk
+  ssrRuntimeChunk,
 };

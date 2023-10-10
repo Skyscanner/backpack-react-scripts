@@ -16,7 +16,7 @@ function inProgress(buildPath) {
   fs.writeFileSync(statusFilePath(buildPath), 'IN_PROGRESS');
 }
 
-exports.init = function(compiler, buildPath) {
+exports.init = function (compiler, buildPath) {
   mkdirp.sync(buildPath);
   inProgress(buildPath);
 
