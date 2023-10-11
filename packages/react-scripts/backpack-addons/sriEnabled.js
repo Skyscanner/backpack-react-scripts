@@ -1,9 +1,9 @@
-"use strict";
+'use strict';
 
-const { SubresourceIntegrityPlugin } = require("webpack-subresource-integrity");
-const paths = require("../config/paths");
+const { SubresourceIntegrityPlugin } = require('webpack-subresource-integrity');
+const paths = require('../config/paths');
 const appPackageJson = require(paths.appPackageJson);
-const bpkReactScriptsConfig = appPackageJson["backpack-react-scripts"] || {};
+const bpkReactScriptsConfig = appPackageJson['backpack-react-scripts'] || {};
 const sriEnabled = bpkReactScriptsConfig.sriEnabled || false;
 
 module.exports = () => {
@@ -15,7 +15,7 @@ module.exports = () => {
     sriEnabled &&
     new SubresourceIntegrityPlugin({
       enabled: true,
-      hashFuncNames: ["sha384"],
+      hashFuncNames: ['sha384'],
     })
   );
 };

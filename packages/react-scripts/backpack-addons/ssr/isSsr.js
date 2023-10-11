@@ -5,11 +5,11 @@ const paths = require('../../config/paths');
 
 /**
  * In order to build for SSR, need to confirm 3 places
- * 
+ *
  * 1. `ssrEnabled` is on
  * 2. Use `build-ssr` command
  * 3. `ssr.js` exists in `src` folder
- * 
+ *
  */
 const isSsr = () => {
   // Ensure `ssrEnabled` is on

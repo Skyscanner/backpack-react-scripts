@@ -8,7 +8,7 @@ module.exports = {
         const buffer = Buffer.from(str.getValue());
 
         return sass.types.String(buffer.toString('base64'));
-      }
-    }
-  }
+      },
+    },
+  },
 };

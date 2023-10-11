@@ -1,5 +1,6 @@
 'use strict';
 
+// eslint-disable-next-line no-unused-vars
 const postcssNormalize = require('postcss-normalize');
 const paths = require('../config/paths');
 const appPackageJson = require(paths.appPackageJson);

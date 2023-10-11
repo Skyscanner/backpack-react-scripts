@@ -8,20 +8,20 @@ function externals(isEnvProduction) {
   if (!isEnvProduction) {
     return {
       externals: {},
-    }
+    };
   }
   return {
     externals: bpkReactScriptsConfig.externals || {},
-  }
+  };
 }
 
 function ssrExternals() {
   return {
     externals: bpkReactScriptsConfig.ssrExternals || [],
-  }
+  };
 }
 
 module.exports = {
   externals,
-  ssrExternals
+  ssrExternals,
 };
