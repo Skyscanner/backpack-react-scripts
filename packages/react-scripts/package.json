@@ -21,6 +21,9 @@
     "utils",
     "backpack-addons"
   ],
+  "scripts": {
+    "test:addons": "jest --testPathPattern=backpack-addons"
+  },
   "bin": {
     "react-scripts": "./bin/react-scripts.js"
   },

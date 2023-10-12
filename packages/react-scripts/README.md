@@ -30,6 +30,7 @@ npm start
   - `babelIncludePrefixes`: An array of module name prefixes to opt into babel compilation, including local import module, e.g. `"../common"`. Includes `["@skyscanner/bpk-", "bpk-", "saddlebag-"]` by default.
   - `enableAutomaticChunking`: Boolean, opt in to automatic chunking of vendor, common and app code.
   - `vendorsChunkRegex`: String, Regex for picking what goes into the `vendors` chunk. See `cacheGroups` in webpack docs. Dependent on `enableAutomaticChunking` being enabled
+  - `splitChunksConfig`: Object, mapping to the [structure in the webpack docs](https://webpack.js.org/plugins/split-chunks-plugin/#optimizationsplitchunks). Applied only if `enableAutomaticChunking` is false, ignores `vendorsChunkRegex` if defined.
   - `amdExcludes`: Array of module names to exclude from AMD parsing. Incldues `["lodash"]` by default.
   - `externals`: exposing the Webpack config to modify externals, see [docs](https://webpack.js.org/configuration/externals/).
   - `ssrExternals`: Similar to above, but for `ssr.js` only.
