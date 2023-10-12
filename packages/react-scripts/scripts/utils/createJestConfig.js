@@ -18,9 +18,9 @@ const bpkReactScriptsConfig = pkgJson['backpack-react-scripts'] || {};
 const includePrefixes = bpkReactScriptsConfig.babelIncludePrefixes || [];
 includePrefixes.unshift('bpk-');
 includePrefixes.unshift('@skyscanner/bpk-');
+includePrefixes.unshift('@skyscanner/backpack-web');
 includePrefixes.unshift('saddlebag-');
 
-// #backpack-addons
 const transformIgnorePattern = `[/\\\\]node_modules[/\\\\](?!${includePrefixes.join(
   '|'
 )}).+\\.(js|jsx|mjs)$`;

@@ -10,6 +10,8 @@ const cssModulesEnabled = bpkReactScriptsConfig.cssModules !== false;
 // Backpack / saddlebag node module regexes
 const backpackModulesRegex = /node_modules[\\/]bpk-/;
 const scopedBackpackModulesRegex = /node_modules[\\/]@skyscanner[\\/]bpk-/;
+const backpackSinglePackageModulesRegex =
+  /node_modules[\\/]@skyscanner[\\/]backpack-web/;
 
 const getStyleTestRegexes = regexType => {
   // style files regexes, the regex values should keep up to date with webpack.config.js
@@ -22,7 +24,11 @@ const getStyleTestRegexes = regexType => {
     case 'css':
       return {
         and: [cssRegex, () => !cssModulesEnabled],
-        not: [backpackModulesRegex, scopedBackpackModulesRegex],
+        not: [
+          backpackModulesRegex,
+          backpackSinglePackageModulesRegex,
+          scopedBackpackModulesRegex,
+        ],
       };
     case 'cssModule':
       return [
@@ -31,13 +37,22 @@ const getStyleTestRegexes = regexType => {
           and: [cssRegex, () => cssModulesEnabled],
         },
         {
-          and: [cssRegex, backpackModulesRegex, scopedBackpackModulesRegex],
+          and: [
+            cssRegex,
+            backpackModulesRegex,
+            backpackSinglePackageModulesRegex,
+            scopedBackpackModulesRegex,
+          ],
         },
       ];
     case 'sass':
       return {
         and: [sassRegex, () => !cssModulesEnabled],
-        not: [backpackModulesRegex, scopedBackpackModulesRegex],
+        not: [
+          backpackModulesRegex,
+          backpackSinglePackageModulesRegex,
+          scopedBackpackModulesRegex,
+        ],
       };
     case 'sassModule':
       return [
@@ -46,7 +61,12 @@ const getStyleTestRegexes = regexType => {
           and: [sassRegex, () => cssModulesEnabled],
         },
         {
-          and: [sassRegex, backpackModulesRegex, scopedBackpackModulesRegex],
+          and: [
+            sassRegex,
+            backpackModulesRegex,
+            backpackSinglePackageModulesRegex,
+            scopedBackpackModulesRegex,
+          ],
         },
       ];
     default:
