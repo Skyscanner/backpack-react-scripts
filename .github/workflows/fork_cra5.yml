@@ -39,7 +39,8 @@ jobs:
       - name: Publish NPM package
         run: |
           cd packages/react-scripts
-          npm version prerelease --preid=dev --no-git-tag-version
+          npm version premajor --preid=$BUILD_VERSION-dev --no-git-tag-version
           npm publish --tag alpha
         env:
+          BUILD_VERSION: ${{ github.run_number }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
