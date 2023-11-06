@@ -96,6 +96,9 @@ if (process.env.HOST) {
 }
 
 // @brs-begin
+
+const isDebugMode = !!process.argv.includes('--debug');
+
 const ui = new MultiCompilerUi();
 // @brs-end
 
@@ -119,12 +122,19 @@ checkBrowsers(paths.appPath, isInteractive)
     const appName = require(paths.appPackageJson).name;
 
     const useTypeScript = fs.existsSync(paths.appTsConfig);
+    const tscCompileOnError = process.env.TSC_COMPILE_ON_ERROR === 'true';
     const urls = prepareUrls(
       protocol,
       HOST,
       port,
       paths.publicUrlOrPath.slice(0, -1)
     );
+    const devSocket = {
+      warnings: warnings =>
+        devServer.sendMessage(devServer.sockets, 'warnings', warnings),
+      errors: errors =>
+        devServer.sendMessage(devServer.sockets, 'errors', errors),
+    };
 
     // @brs-begin
     const webUi = new WebCompilerUi(
@@ -171,7 +181,7 @@ checkBrowsers(paths.appPath, isInteractive)
     const devServer = new WebpackDevServer(serverConfig, compiler);
     // Launch WebpackDevServer.
     devServer.startCallback(() => {
-      if (isInteractive) {
+      if (isInteractive && !isDebugMode) {
         clearConsole();
       }
 
