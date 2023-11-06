@@ -314,6 +314,7 @@ module.exports = function (webpackEnv) {
     ...require('../backpack-addons/externals').externals(isEnvProduction), // #backpack-addons externals
     resolve: {
       fallback: {
+        // Falling back to false as these features are not expected to be used by browsers, and node will have native imports to resolve them
         util: false,
         assert: false,
         crypto: false,
