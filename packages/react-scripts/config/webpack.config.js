@@ -232,7 +232,7 @@ module.exports = function (webpackEnv) {
       chunkFilename: isEnvProduction
         ? 'static/js/[name].[contenthash:8].chunk.js'
         : isEnvDevelopment && 'static/js/[name].chunk.js',
-      assetModuleFilename: 'static/media/[name].[hash][ext]',
+      assetModuleFilename: 'static/media/[name].[contenthash:8][ext]',
       // webpack uses `publicPath` to determine where the app is being served from.
       // It requires a trailing slash, or the file assets will get an incorrect path.
       // We inferred the "public path" (such as / or /my-project) from homepage.
@@ -308,7 +308,7 @@ module.exports = function (webpackEnv) {
         // This is only used in production mode
         new CssMinimizerPlugin(),
       ],
-      ...require('../backpack-addons/splitChunks')(isEnvDevelopment), // #backpack-addons splitChunks
+      ...require('../backpack-addons/splitChunks')(), // #backpack-addons splitChunks
       ...require('../backpack-addons/runtimeChunk').runtimeChunk, // #backpack-addons runtimeChunk
     },
     ...require('../backpack-addons/externals').externals(isEnvProduction), // #backpack-addons externals
@@ -316,11 +316,11 @@ module.exports = function (webpackEnv) {
       fallback: {
         util: false,
         assert: false,
-        crypto: require.resolve('crypto-browserify'),
-        domain: require.resolve('domain-browser'),
-        path: require.resolve('path-browserify'),
-        stream: require.resolve('stream-browserify'),
-        zlib: require.resolve('browserify-zlib'),
+        crypto: false,
+        domain: false,
+        path: false,
+        stream: false,
+        zlib: false,
       },
       // This allows you to set a fallback for where webpack should look for modules.
       // We placed these paths second because we want `node_modules` to "win"
@@ -373,7 +373,7 @@ module.exports = function (webpackEnv) {
         shouldUseSourceMap && {
           enforce: 'pre',
           exclude: /@babel(?:\/|\\{1,2})runtime/,
-          test: /\.(js|mjs|jsx|ts|tsx|css)$/,
+          test: /\.(js|mjs|cjs|jsx|ts|tsx|css)$/,
           loader: require.resolve('source-map-loader'),
         },
         {
@@ -424,7 +424,7 @@ module.exports = function (webpackEnv) {
                 {
                   loader: require.resolve('file-loader'),
                   options: {
-                    name: 'static/media/[name].[hash].[ext]',
+                    name: 'static/media/[name].[contenthash:8].[ext]',
                   },
                 },
               ],
@@ -435,7 +435,7 @@ module.exports = function (webpackEnv) {
             // Process application JS with Babel.
             // The preset includes JSX, Flow, TypeScript, and some ESnext features.
             {
-              test: /\.(js|mjs|jsx|ts|tsx)$/,
+              test: /\.(js|mjs|cjs|jsx|ts|tsx)$/,
               include: require('../backpack-addons/babelIncludePrefixes')(), // #backpack-addons babelIncludePrefixes
               loader: require.resolve('babel-loader'),
               options: {
@@ -500,7 +500,7 @@ module.exports = function (webpackEnv) {
             // Process application JS with Babel but without `.storybook` folder.
             // The preset includes JSX, Flow, TypeScript, and some ESnext features.
             {
-              test: /\.(js|mjs|jsx|ts|tsx)$/,
+              test: /\.(js|mjs|cjs|jsx|ts|tsx)$/,
               exclude: /\.storybook/,
               include: require('../backpack-addons/babelIncludePrefixes')(), // #backpack-addons babelIncludePrefixes
               use: [
@@ -557,7 +557,7 @@ module.exports = function (webpackEnv) {
             // Process any JS outside of the app with Babel.
             // Unlike the application JS, we only compile the standard ES features.
             {
-              test: /\.(js|mjs)$/,
+              test: /\.(js|mjs|cjs)$/,
               exclude: /@babel(?:\/|\\{1,2})runtime/,
               loader: require.resolve('babel-loader'),
               options: {
@@ -695,7 +695,12 @@ module.exports = function (webpackEnv) {
               // its runtime that would otherwise be processed through "file" loader.
               // Also exclude `html` and `json` extensions so they get processed
               // by webpacks internal loaders.
-              exclude: [/^$/, /\.(js|mjs|jsx|ts|tsx)$/, /\.html$/, /\.json$/],
+              exclude: [
+                /^$/,
+                /\.(js|mjs|cjs|jsx|ts|tsx)$/,
+                /\.html$/,
+                /\.json$/,
+              ],
               type: 'asset/resource',
             },
             // ** STOP ** Are you adding a new loader?

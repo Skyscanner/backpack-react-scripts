@@ -23,7 +23,7 @@ includePrefixes.unshift('saddlebag-');
 
 const transformIgnorePattern = `[/\\\\]node_modules[/\\\\](?!${includePrefixes.join(
   '|'
-)}).+\\.(js|jsx|mjs)$`;
+)}).+\\.(js|jsx|mjs|cjs)$`;
 
 module.exports = (resolve, rootDir, isEjecting) => {
   // Use this instead of `paths.testsSetup` to avoid putting

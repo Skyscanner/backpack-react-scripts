@@ -51,13 +51,7 @@ const paths = require('../config/paths');
 const appPackageJson = require(paths.appPackageJson);
 const bpkReactScriptsConfig = appPackageJson['backpack-react-scripts'] || {};
 
-module.exports = isEnvDevelopment => {
-  if (isEnvDevelopment) {
-    return {
-      splitChunks: false,
-    };
-  }
-
+module.exports = () => {
   let splitChunksConfig = {};
 
   // If opted in to automatic chunking, apply default configuration
