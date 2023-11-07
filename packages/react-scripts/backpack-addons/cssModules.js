@@ -7,11 +7,12 @@ const appPackageJson = require(paths.appPackageJson);
 const bpkReactScriptsConfig = appPackageJson['backpack-react-scripts'] || {};
 const cssModulesEnabled = bpkReactScriptsConfig.cssModules !== false;
 
-// Backpack / saddlebag node module regexes
-const backpackModulesRegex = /node_modules[\\/]bpk-/;
-const scopedBackpackModulesRegex = /node_modules[\\/]@skyscanner[\\/]bpk-/;
-const backpackSinglePackageModulesRegex =
-  /node_modules[\\/]@skyscanner[\\/]backpack-web/;
+// Backpack node module regexes
+const {
+  backpackModulesRegex,
+  scopedBackpackModulesRegex,
+  backpackMixinsModulesRegex,
+} = require('./babelIncludePrefixes');
 
 const getStyleTestRegexes = regexType => {
   // style files regexes, the regex values should keep up to date with webpack.config.js
@@ -26,7 +27,7 @@ const getStyleTestRegexes = regexType => {
         and: [cssRegex, () => !cssModulesEnabled],
         not: [
           backpackModulesRegex,
-          backpackSinglePackageModulesRegex,
+          backpackMixinsModulesRegex,
           scopedBackpackModulesRegex,
         ],
       };
@@ -40,7 +41,7 @@ const getStyleTestRegexes = regexType => {
           and: [
             cssRegex,
             backpackModulesRegex,
-            backpackSinglePackageModulesRegex,
+            backpackMixinsModulesRegex,
             scopedBackpackModulesRegex,
           ],
         },
@@ -50,7 +51,7 @@ const getStyleTestRegexes = regexType => {
         and: [sassRegex, () => !cssModulesEnabled],
         not: [
           backpackModulesRegex,
-          backpackSinglePackageModulesRegex,
+          backpackMixinsModulesRegex,
           scopedBackpackModulesRegex,
         ],
       };
@@ -64,7 +65,7 @@ const getStyleTestRegexes = regexType => {
           and: [
             sassRegex,
             backpackModulesRegex,
-            backpackSinglePackageModulesRegex,
+            backpackMixinsModulesRegex,
             scopedBackpackModulesRegex,
           ],
         },

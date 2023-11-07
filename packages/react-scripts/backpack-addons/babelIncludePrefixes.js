@@ -6,6 +6,11 @@ const appPackageJson = require(paths.appPackageJson);
 const bpkReactScriptsConfig = appPackageJson['backpack-react-scripts'] || {};
 const customModuleRegexes = bpkReactScriptsConfig.babelIncludePrefixes
   ? bpkReactScriptsConfig.babelIncludePrefixes.map(prefix => {
+      if (/^@skyscanner(.*)\/$/.test(prefix) || /^saddlebag-$/.test(prefix)) {
+        console.warn(
+          `Warning: Generic ${prefix} is not allowed as this could include transpilation of precompiled code. Please use a more specific prefix to transpile only the code you need.`
+        );
+      }
       if (prefix && /^(\.|\/)/.test(prefix)) {
         // if the prefixes starts with '.' or '/', e.g. '../common' './common' '/common'
         // That means it is a relative path which doesn't need to be in the node_modules folder
@@ -15,20 +20,18 @@ const customModuleRegexes = bpkReactScriptsConfig.babelIncludePrefixes
     })
   : [];
 
-// Backpack / saddlebag node module regexes
+// Backpack node module regexes
 const backpackModulesRegex = /node_modules[\\/]bpk-/;
-const saddlebagModulesRegex = /node_modules[\\/]saddlebag-/;
 const scopedBackpackModulesRegex = /node_modules[\\/]@skyscanner[\\/]bpk-/;
-const backpackSinglePackageModulesRegex =
-  /node_modules[\\/]@skyscanner[\\/]backpack-web/;
+const backpackMixinsModulesRegex =
+  /node_modules[\\/]@skyscanner[\\/]backpack-web[\\/]bpk-mixins/;
 
 module.exports = () => {
   return [
     paths.appSrc,
     backpackModulesRegex,
-    saddlebagModulesRegex,
     scopedBackpackModulesRegex,
-    backpackSinglePackageModulesRegex,
+    backpackMixinsModulesRegex,
     ...customModuleRegexes,
   ];
 };
