@@ -51,20 +51,19 @@ const paths = require('../config/paths');
 const appPackageJson = require(paths.appPackageJson);
 const bpkReactScriptsConfig = appPackageJson['backpack-react-scripts'] || {};
 
-module.exports = isEnvDevelopment => {
+module.exports = () => {
   let splitChunksConfig = {};
 
   // If opted in to automatic chunking, apply default configuration
   if (bpkReactScriptsConfig.enableAutomaticChunking) {
     splitChunksConfig = {
       chunks: 'all',
-      name: isEnvDevelopment,
       cacheGroups: {},
     };
     // Apply vendorsChunkRegex if provided
     if (bpkReactScriptsConfig.vendorsChunkRegex) {
       splitChunksConfig.cacheGroups = {
-        vendors: {
+        defaultVendors: {
           // Regexes are passed as strings in package.json config, but need constructed here.
           test: new RegExp(bpkReactScriptsConfig.vendorsChunkRegex),
         },
@@ -75,7 +74,6 @@ module.exports = isEnvDevelopment => {
   else if (bpkReactScriptsConfig.splitChunksConfig) {
     splitChunksConfig = {
       ...bpkReactScriptsConfig.splitChunksConfig,
-      name: isEnvDevelopment,
     };
     if (splitChunksConfig.cacheGroups) {
       // Regexes are passed as strings in package.json config, but need constructed here.

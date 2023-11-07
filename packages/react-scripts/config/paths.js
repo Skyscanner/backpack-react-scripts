@@ -34,6 +34,7 @@ const buildPath = process.env.BUILD_PATH || 'build';
 const moduleFileExtensions = [
   'web.mjs',
   'mjs',
+  'cjs',
   'web.js',
   'js',
   'web.ts',

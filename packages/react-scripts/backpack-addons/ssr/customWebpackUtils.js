@@ -1,7 +1,6 @@
 // eslint-disable-next-line strict
 const chalk = require('chalk');
 const formatWebpackMessages = require('react-dev-utils/formatWebpackMessages');
-const typescriptFormatter = require('react-dev-utils/typescriptFormatter');
 const forkTsCheckerWebpackPlugin = require('react-dev-utils/ForkTsCheckerWebpackPlugin');
 
 /**
@@ -81,8 +80,7 @@ function createCustomCompiler(
       .getCompilerHooks(compiler)
       .receive.tap('afterTypeScriptCheck', (diagnostics, lints) => {
         const allMsgs = [...diagnostics, ...lints];
-        const format = message =>
-          `${message.file}\n${typescriptFormatter(message, true)}`;
+        const format = message => `${message.file}\n${message}`;
 
         tsMessagesResolver({
           errors: allMsgs.filter(msg => msg.severity === 'error').map(format),
