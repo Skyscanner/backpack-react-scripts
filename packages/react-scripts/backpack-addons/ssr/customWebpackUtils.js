@@ -78,13 +78,22 @@ function createCustomCompiler(
 
     forkTsCheckerWebpackPlugin
       .getCompilerHooks(compiler)
-      .receive.tap('afterTypeScriptCheck', (diagnostics, lints) => {
-        const allMsgs = [...diagnostics, ...lints];
+      .waiting.tap('awaitingTypeScriptCheck', () => {
+        console.log(
+          chalk.yellow(
+            'Files successfully emitted, waiting for typecheck results...'
+          )
+        );
+      });
+
+    forkTsCheckerWebpackPlugin
+      .getCompilerHooks(compiler)
+      .issues.tap('afterTypeScriptCheck', issues => {
         const format = message => `${message.file}\n${message}`;
 
         tsMessagesResolver({
-          errors: allMsgs.filter(msg => msg.severity === 'error').map(format),
-          warnings: allMsgs
+          errors: issues.filter(msg => msg.severity === 'error').map(format),
+          warnings: issues
             .filter(msg => msg.severity === 'warning')
             .map(format),
         });
