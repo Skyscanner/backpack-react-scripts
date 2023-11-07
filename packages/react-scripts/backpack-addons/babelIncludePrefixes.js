@@ -21,17 +21,8 @@ const customModuleRegexes = bpkReactScriptsConfig.babelIncludePrefixes
   : [];
 
 // Backpack node module regexes
-const backpackModulesRegex = /node_modules[\\/]bpk-/;
 const scopedBackpackModulesRegex = /node_modules[\\/]@skyscanner[\\/]bpk-/;
-const backpackMixinsModulesRegex =
-  /node_modules[\\/]@skyscanner[\\/]backpack-web[\\/]bpk-mixins/;
 
 module.exports = () => {
-  return [
-    paths.appSrc,
-    backpackModulesRegex,
-    scopedBackpackModulesRegex,
-    backpackMixinsModulesRegex,
-    ...customModuleRegexes,
-  ];
+  return [paths.appSrc, scopedBackpackModulesRegex, ...customModuleRegexes];
 };

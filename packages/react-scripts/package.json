@@ -9,7 +9,7 @@
   },
   "license": "MIT",
   "engines": {
-    "node": ">=14.0.0"
+    "node": ">=18.0.0"
   },
   "files": [
     "bin",
@@ -90,7 +90,7 @@
   },
   "peerDependencies": {
     "node-sass": ">=7",
-    "react": ">= 16",
+    "react": ">= 17",
     "sass-embedded": "*",
     "typescript": "^3.2.1 || ^4 || ^5"
   },
