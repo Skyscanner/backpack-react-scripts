@@ -8,11 +8,10 @@ const bpkReactScriptsConfig = appPackageJson['backpack-react-scripts'] || {};
 const cssModulesEnabled = bpkReactScriptsConfig.cssModules !== false;
 
 // Backpack node module regexes
-const {
-  backpackModulesRegex,
-  scopedBackpackModulesRegex,
-  backpackMixinsModulesRegex,
-} = require('./babelIncludePrefixes');
+const backpackModulesRegex = /node_modules[\\/]bpk-/;
+const scopedBackpackModulesRegex = /node_modules[\\/]@skyscanner[\\/]bpk-/;
+const backpackMixinsModulesRegex =
+  /node_modules[\\/]@skyscanner[\\/]backpack-web[\\/]bpk-mixins/;
 
 const getStyleTestRegexes = regexType => {
   // style files regexes, the regex values should keep up to date with webpack.config.js
