@@ -384,6 +384,14 @@ module.exports = function (webpackEnv) {
           exclude: /@babel(?:\/|\\{1,2})runtime/,
           test: /\.(js|mjs|cjs|jsx|ts|tsx|css)$/,
           loader: require.resolve('source-map-loader'),
+          options: {
+            filterSourceMappingUrl: (url, resourcePath) => {
+              // We need to see warnings about incorrect sourcemaps only for local files or in debug mode
+              // Upstream issue in CRA, still not fixed
+              //https://stackoverflow.com/questions/63195843/webpack-module-warning-failed-to-parse-source-map-from-data-url
+              return !/.*\/node_modules\/.*/.test(resourcePath) || isDebugMode;
+            },
+          },
         },
         {
           // "oneOf" will traverse all following loaders until one will
