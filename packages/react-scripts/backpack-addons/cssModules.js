@@ -7,7 +7,7 @@ const appPackageJson = require(paths.appPackageJson);
 const bpkReactScriptsConfig = appPackageJson['backpack-react-scripts'] || {};
 const cssModulesEnabled = bpkReactScriptsConfig.cssModules !== false;
 
-// Backpack / saddlebag node module regexes
+// Backpack node module regexes
 const backpackModulesRegex = /node_modules[\\/]bpk-/;
 const scopedBackpackModulesRegex = /node_modules[\\/]@skyscanner[\\/]bpk-/;
 const backpackSinglePackageModulesRegex =
