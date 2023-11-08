@@ -15,10 +15,15 @@ const modules = require('../../config/modules');
 const pkgJson = require(paths.appPackageJson);
 const bpkReactScriptsConfig = pkgJson['backpack-react-scripts'] || {};
 
-const includePrefixes = bpkReactScriptsConfig.babelIncludePrefixes || [];
-includePrefixes.unshift('bpk-');
-includePrefixes.unshift('@skyscanner/bpk-');
-includePrefixes.unshift('@skyscanner/backpack-web/bpk-mixins');
+const includePrefixes = bpkReactScriptsConfig.jestIncludePrefixes || [];
+
+includePrefixes.forEach(prefix => {
+  if (/^@skyscanner(.*)\/$/.test(prefix) || /^saddlebag-$/.test(prefix)) {
+    console.warn(
+      `Warning: Generic ${prefix} is not allowed as this could include transpilation of precompiled code. Please use a more specific prefix to transpile only the code you need.`
+    );
+  }
+});
 
 const transformIgnorePattern = `[/\\\\]node_modules[/\\\\](?!${includePrefixes.join(
   '|'
@@ -36,7 +41,7 @@ module.exports = (resolve, rootDir, isEjecting) => {
 
   const config = {
     roots: ['<rootDir>/src'],
-
+    verbose: true,
     collectCoverageFrom: ['src/**/*.{js,jsx,ts,tsx}', '!src/**/*.d.ts'],
 
     setupFiles: [
@@ -51,6 +56,9 @@ module.exports = (resolve, rootDir, isEjecting) => {
       '<rootDir>/src/**/*.{spec,test}.{js,jsx,ts,tsx}',
     ],
     testEnvironment: 'jsdom',
+    testEnvironmentOptions: {
+      url: 'http://localhost/',
+    },
     transform: {
       '^.+\\.(js|jsx|mjs|cjs|ts|tsx)$': resolve(
         'config/jest/babelTransform.js'
