@@ -140,7 +140,12 @@ module.exports = function (webpackEnv) {
       // },
       {
         loader: require.resolve('css-loader'),
-        options: cssOptions,
+        options: {
+          ...cssOptions,
+          url: {
+            filter: url => !/^data:/.test(url),
+          },
+        },
       },
       {
         // Options for PostCSS as we reference these options twice
@@ -323,6 +328,12 @@ module.exports = function (webpackEnv) {
     resolve: {
       // Falling back to false as these features are not expected to be used by browsers, and node will have native imports to resolve them
       fallback: {
+        http: false,
+        https: false,
+        cluster: false,
+        fs: false,
+        os: false,
+        tty: false,
         util: false,
         assert: false,
         crypto: false,
@@ -430,9 +441,14 @@ module.exports = function (webpackEnv) {
                   loader: require.resolve('@svgr/webpack'),
                   options: {
                     prettier: false,
-                    svgo: false,
+                    svgo: true,
                     svgoConfig: {
-                      plugins: [{ removeViewBox: false }],
+                      plugins: [
+                        {
+                          name: 'preset-default',
+                          removeViewBox: false,
+                        },
+                      ],
                     },
                     titleProp: true,
                     ref: true,
@@ -489,17 +505,6 @@ module.exports = function (webpackEnv) {
                 // @remove-on-eject-end
                 plugins: [
                   require.resolve('@loadable/babel-plugin'),
-                  [
-                    require.resolve('babel-plugin-named-asset-import'),
-                    {
-                      loaderMap: {
-                        svg: {
-                          ReactComponent:
-                            '@svgr/webpack?-svgo,+titleProp,+ref![path]',
-                        },
-                      },
-                    },
-                  ],
                   isEnvDevelopment &&
                     shouldUseReactRefresh &&
                     require.resolve('react-refresh/babel'),
