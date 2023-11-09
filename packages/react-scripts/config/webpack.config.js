@@ -320,6 +320,12 @@ module.exports = function (webpackEnv) {
     resolve: {
       fallback: {
         // Falling back to false as these features are not expected to be used by browsers, and node will have native imports to resolve them
+        http: false,
+        https: false,
+        cluster: false,
+        fs: false,
+        os: false,
+        tty: false,
         util: false,
         assert: false,
         crypto: false,
@@ -427,9 +433,14 @@ module.exports = function (webpackEnv) {
                   loader: require.resolve('@svgr/webpack'),
                   options: {
                     prettier: false,
-                    svgo: false,
+                    svgo: true,
                     svgoConfig: {
-                      plugins: [{ removeViewBox: false }],
+                      plugins: [
+                        {
+                          name: 'preset-default',
+                          removeViewBox: false,
+                        },
+                      ],
                     },
                     titleProp: true,
                     ref: true,
