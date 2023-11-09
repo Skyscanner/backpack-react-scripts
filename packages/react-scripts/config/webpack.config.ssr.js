@@ -140,7 +140,12 @@ module.exports = function (webpackEnv) {
       // },
       {
         loader: require.resolve('css-loader'),
-        options: cssOptions,
+        options: {
+          ...cssOptions,
+          url: {
+            filter: url => !/^data:/.test(url),
+          },
+        },
       },
       {
         // Options for PostCSS as we reference these options twice
@@ -489,17 +494,6 @@ module.exports = function (webpackEnv) {
                 // @remove-on-eject-end
                 plugins: [
                   require.resolve('@loadable/babel-plugin'),
-                  [
-                    require.resolve('babel-plugin-named-asset-import'),
-                    {
-                      loaderMap: {
-                        svg: {
-                          ReactComponent:
-                            '@svgr/webpack?-svgo,+titleProp,+ref![path]',
-                        },
-                      },
-                    },
-                  ],
                   isEnvDevelopment &&
                     shouldUseReactRefresh &&
                     require.resolve('react-refresh/babel'),
