@@ -2,6 +2,10 @@
 
 const withIncludedPrefixes = require('../../backpack-addons/babelIncludePrefixes');
 const getCacheIdentifier = require('react-dev-utils/getCacheIdentifier');
+const {
+  useExperimentalEsbuildLoader,
+} = require('../../backpack-addons/useExperimentalEsbuildLoader');
+const { getEsbuildCustomLoaders } = require('./esbuildLoader');
 
 function getJSLoaders(
   isEnvProduction,
@@ -10,6 +14,15 @@ function getJSLoaders(
   hasJsxRuntime,
   shouldUseSourceMap
 ) {
+  if (useExperimentalEsbuildLoader) {
+    return getEsbuildCustomLoaders(
+      withIncludedPrefixes(),
+      isEnvProduction,
+      isEnvDevelopment,
+      shouldUseReactRefresh
+    );
+  }
+
   return [
     // Process application JS with Babel.
     // The preset includes JSX, Flow, TypeScript, and some ESnext features.
