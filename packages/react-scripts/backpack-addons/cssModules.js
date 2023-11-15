@@ -1,11 +1,11 @@
 'use strict';
 
-// eslint-disable-next-line no-unused-vars
-const postcssNormalize = require('postcss-normalize');
 const paths = require('../config/paths');
 const appPackageJson = require(paths.appPackageJson);
 const bpkReactScriptsConfig = appPackageJson['backpack-react-scripts'] || {};
 const cssModulesEnabled = bpkReactScriptsConfig.cssModules !== false;
+const noBackpackStylePrefixes =
+  bpkReactScriptsConfig.danger_noBackpackStylePrefixes !== false;
 
 // Backpack node module regexes
 const backpackModulesRegex = /node_modules[\\/]bpk-/;
@@ -22,6 +22,12 @@ const getStyleTestRegexes = regexType => {
 
   switch (regexType) {
     case 'css':
+      if (noBackpackStylePrefixes) {
+        return {
+          and: [cssRegex, () => !cssModulesEnabled],
+        };
+      }
+
       return {
         and: [cssRegex, () => !cssModulesEnabled],
         not: [
@@ -31,6 +37,15 @@ const getStyleTestRegexes = regexType => {
         ],
       };
     case 'cssModule':
+      if (noBackpackStylePrefixes) {
+        return [
+          cssModuleRegex,
+          {
+            and: [cssRegex, () => cssModulesEnabled],
+          },
+        ];
+      }
+
       return [
         cssModuleRegex,
         {
@@ -46,6 +61,12 @@ const getStyleTestRegexes = regexType => {
         },
       ];
     case 'sass':
+      if (noBackpackStylePrefixes) {
+        return {
+          and: [sassRegex, () => !cssModulesEnabled],
+        };
+      }
+
       return {
         and: [sassRegex, () => !cssModulesEnabled],
         not: [
@@ -55,6 +76,15 @@ const getStyleTestRegexes = regexType => {
         ],
       };
     case 'sassModule':
+      if (noBackpackStylePrefixes) {
+        return [
+          sassModuleRegex,
+          {
+            and: [sassRegex, () => cssModulesEnabled],
+          },
+        ];
+      }
+
       return [
         sassModuleRegex,
         {

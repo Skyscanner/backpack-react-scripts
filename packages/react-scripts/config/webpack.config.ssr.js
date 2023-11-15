@@ -15,7 +15,6 @@ process.env.FAST_REFRESH = 'false';
 const fs = require('fs');
 const path = require('path');
 const webpack = require('webpack');
-const resolve = require('resolve');
 // const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
 // const InlineChunkHtmlPlugin = require('react-dev-utils/InlineChunkHtmlPlugin');
@@ -31,14 +30,7 @@ const paths = require('./paths');
 const modules = require('./modules');
 const getClientEnvironment = require('./env');
 const ModuleNotFoundPlugin = require('react-dev-utils/ModuleNotFoundPlugin');
-const ForkTsCheckerWebpackPlugin =
-  process.env.TSC_COMPILE_ON_ERROR === 'true'
-    ? require('react-dev-utils/ForkTsCheckerWarningWebpackPlugin')
-    : require('react-dev-utils/ForkTsCheckerWebpackPlugin');
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
-// @remove-on-eject-begin
-const getCacheIdentifier = require('react-dev-utils/getCacheIdentifier');
-// @remove-on-eject-end
 const createEnvironmentHash = require('./webpack/persistentCache/createEnvironmentHash');
 
 const isSsr = require('../backpack-addons/ssr/isSsr'); // #backpack-addons ssr
@@ -47,6 +39,9 @@ const isSsr = require('../backpack-addons/ssr/isSsr'); // #backpack-addons ssr
 const needBuildSsr = !isSsr() && fs.existsSync(paths.appSsrJs);
 
 const LoadablePlugin = require('@loadable/webpack-plugin');
+const { getJSLoaders } = require('./loaders/getJSLoaders');
+const { useTsChecker } = require('../backpack-addons/useTsChecker');
+const { getAssetLoaders } = require('./loaders/getAssetLoaders');
 
 // Source maps are resource heavy and can cause out of memory issue for large source files.
 const shouldUseSourceMap = process.env.GENERATE_SOURCEMAP !== 'false';
@@ -72,11 +67,7 @@ const babelRuntimeRegenerator = require.resolve('@babel/runtime/regenerator', {
 // const emitErrorsAsWarnings = process.env.ESLINT_NO_DEV_ERRORS === 'true';
 // const disableESLintPlugin = process.env.DISABLE_ESLINT_PLUGIN === 'true';
 
-const imageInlineSizeLimit = parseInt(
-  process.env.IMAGE_INLINE_SIZE_LIMIT || '10000'
-);
-
-// Check if TypeScript is setup
+// Check if TypeScript is set up
 const useTypeScript = fs.existsSync(paths.appTsConfig);
 
 // Check if Tailwind config exists
@@ -409,215 +400,15 @@ module.exports = function (webpackEnv) {
           // match the requirements. When no loader matches it will fall
           // back to the "file" loader at the end of the loader list.
           oneOf: [
-            // TODO: Merge this config once `image/avif` is in the mime-db
-            // https://github.com/jshttp/mime-db
-            {
-              test: [/\.avif$/],
-              type: 'asset',
-              mimetype: 'image/avif',
-              parser: {
-                dataUrlCondition: {
-                  maxSize: imageInlineSizeLimit,
-                },
-              },
-            },
             require('../backpack-addons/amdExcludes'), // #backpack-addons amdExcludes
-            // "url" loader works like "file" loader except that it embeds assets
-            // smaller than specified limit in bytes as data URLs to avoid requests.
-            // A missing `test` is equivalent to a match.
-            {
-              test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/],
-              type: 'asset',
-              parser: {
-                dataUrlCondition: {
-                  maxSize: imageInlineSizeLimit,
-                },
-              },
-            },
-            {
-              test: /\.svg$/,
-              use: [
-                {
-                  loader: require.resolve('@svgr/webpack'),
-                  options: {
-                    prettier: false,
-                    svgo: true,
-                    svgoConfig: {
-                      plugins: [
-                        {
-                          name: 'preset-default',
-                          removeViewBox: false,
-                        },
-                      ],
-                    },
-                    titleProp: true,
-                    ref: true,
-                  },
-                },
-                {
-                  loader: require.resolve('file-loader'),
-                  options: {
-                    name: 'static/media/[name].[contenthash:8].[ext]',
-                  },
-                },
-              ],
-              issuer: {
-                and: [/\.(ts|tsx|js|jsx|md|mdx)$/],
-              },
-            },
-            // Process application JS with Babel.
-            // The preset includes JSX, Flow, TypeScript, and some ESnext features.
-            {
-              test: /\.(js|mjs|cjs|jsx|ts|tsx)$/,
-              include: require('../backpack-addons/babelIncludePrefixes')(), // #backpack-addons babelIncludePrefixes
-              loader: require.resolve('babel-loader'),
-              options: {
-                customize: require.resolve(
-                  'babel-preset-react-app/webpack-overrides'
-                ),
-                presets: [
-                  [
-                    require.resolve('babel-preset-react-app'),
-                    {
-                      runtime: hasJsxRuntime ? 'automatic' : 'classic',
-                    },
-                  ],
-                ],
-                // @remove-on-eject-begin
-                babelrc: false,
-                configFile: false,
-                // Make sure we have a unique cache identifier, erring on the
-                // side of caution.
-                // We remove this when the user ejects because the default
-                // is sane and uses Babel options. Instead of options, we use
-                // the react-scripts and babel-preset-react-app versions.
-                cacheIdentifier: getCacheIdentifier(
-                  isEnvProduction
-                    ? 'production'
-                    : isEnvDevelopment && 'development',
-                  [
-                    'babel-plugin-named-asset-import',
-                    'babel-preset-react-app',
-                    'react-dev-utils',
-                    'react-scripts',
-                  ]
-                ),
-                // @remove-on-eject-end
-                plugins: [
-                  require.resolve('@loadable/babel-plugin'),
-                  isEnvDevelopment &&
-                    shouldUseReactRefresh &&
-                    require.resolve('react-refresh/babel'),
-                ].filter(Boolean),
-                // This is a feature of `babel-loader` for webpack (not Babel itself).
-                // It enables caching results in ./node_modules/.cache/babel-loader/
-                // directory for faster rebuilds.
-                cacheDirectory: true,
-                // See #6846 for context on why cacheCompression is disabled
-                cacheCompression: false,
-                compact: isEnvProduction,
-              },
-            },
-            // Process application JS with Babel but without `.storybook` folder.
-            // The preset includes JSX, Flow, TypeScript, and some ESnext features.
-            {
-              test: /\.(js|mjs|cjs|jsx|ts|tsx)$/,
-              exclude: /\.storybook/,
-              include: require('../backpack-addons/babelIncludePrefixes')(), // #backpack-addons babelIncludePrefixes
-              use: [
-                // {
-                //   loader: require.resolve('thread-loader'),
-                //   options: jsWorkerPool,
-                // },
-                {
-                  loader: require.resolve('babel-loader'),
-                  options: {
-                    customize: require.resolve(
-                      'babel-preset-react-app/webpack-overrides'
-                    ),
-                    presets: [
-                      [
-                        require.resolve('babel-preset-react-app'),
-                        {
-                          runtime: hasJsxRuntime ? 'automatic' : 'classic',
-                        },
-                      ],
-                    ],
-                    // @remove-on-eject-begin
-                    babelrc: false,
-                    configFile: false,
-                    // Make sure we have a unique cache identifier, erring on the
-                    // side of caution.
-                    // We remove this when the user ejects because the default
-                    // is sane and uses Babel options. Instead of options, we use
-                    // the react-scripts and babel-preset-react-app versions.
-                    cacheIdentifier: getCacheIdentifier(
-                      isEnvProduction
-                        ? 'production'
-                        : isEnvDevelopment && 'development',
-                      [
-                        'babel-plugin-named-asset-import',
-                        'babel-preset-react-app',
-                        'react-dev-utils',
-                        'react-scripts',
-                      ]
-                    ),
-                    // @remove-on-eject-end
-                    plugins: [
-                      isEnvDevelopment &&
-                        shouldUseReactRefresh &&
-                        require.resolve('react-refresh/babel'),
-                    ].filter(Boolean),
-                    // This is a feature of `babel-loader` for webpack (not Babel itself).
-                    // It enables caching results in ./node_modules/.cache/babel-loader/
-                    // directory for faster rebuilds.
-                    cacheDirectory: true,
-                    // See #6846 for context on why cacheCompression is disabled
-                    cacheCompression: false,
-                    compact: isEnvProduction,
-                  },
-                },
-              ].filter(Boolean),
-            },
-            // Process any JS outside of the app with Babel.
-            // Unlike the application JS, we only compile the standard ES features.
-            {
-              test: /\.(js|mjs|cjs)$/,
-              exclude: /@babel(?:\/|\\{1,2})runtime/,
-              loader: require.resolve('babel-loader'),
-              options: {
-                babelrc: false,
-                configFile: false,
-                compact: false,
-                presets: [
-                  [
-                    require.resolve('babel-preset-react-app/dependencies'),
-                    { helpers: true },
-                  ],
-                ],
-                cacheDirectory: true,
-                // See #6846 for context on why cacheCompression is disabled
-                cacheCompression: false,
-                // @remove-on-eject-begin
-                cacheIdentifier: getCacheIdentifier(
-                  isEnvProduction
-                    ? 'production'
-                    : isEnvDevelopment && 'development',
-                  [
-                    'babel-plugin-named-asset-import',
-                    'babel-preset-react-app',
-                    'react-dev-utils',
-                    'react-scripts',
-                  ]
-                ),
-                // @remove-on-eject-end
-                // Babel sourcemaps are needed for debugging into node_modules
-                // code.  Without the options below, debuggers like VSCode
-                // show incorrect code and set breakpoints on the wrong lines.
-                sourceMaps: shouldUseSourceMap,
-                inputSourceMap: shouldUseSourceMap,
-              },
-            },
+            ...getAssetLoaders(),
+            ...getJSLoaders(
+              isEnvProduction,
+              isEnvDevelopment,
+              shouldUseReactRefresh,
+              hasJsxRuntime,
+              shouldUseSourceMap
+            ),
             // "postcss" loader applies autoprefixer to our CSS.
             // "css" loader resolves paths in CSS and adds assets as dependencies.
             // "style" loader turns CSS into JS modules that inject <style> tags.
@@ -879,79 +670,7 @@ module.exports = function (webpackEnv) {
       //   }),
       // TypeScript type checking
       useTypeScript &&
-        new ForkTsCheckerWebpackPlugin({
-          async: isEnvDevelopment,
-          typescript: {
-            typescriptPath: resolve.sync('typescript', {
-              basedir: paths.appNodeModules,
-            }),
-            configOverwrite: {
-              compilerOptions: {
-                sourceMap: isEnvProduction
-                  ? shouldUseSourceMap
-                  : isEnvDevelopment,
-                skipLibCheck: true,
-                inlineSourceMap: false,
-                declarationMap: false,
-                noEmit: true,
-                incremental: true,
-                tsBuildInfoFile: paths.appTsBuildInfoFile,
-              },
-            },
-            context: paths.appPath,
-            diagnosticOptions: {
-              syntactic: true,
-            },
-            mode: 'write-references',
-            // profile: true,
-          },
-          issue: {
-            // This one is specifically to match during CI tests,
-            // as micromatch doesn't match
-            // '../cra-template-typescript/template/src/App.tsx'
-            // otherwise.
-            include: [
-              { file: '../**/src/**/*.{ts,tsx}' },
-              { file: '**/src/**/*.{ts,tsx}' },
-            ],
-            exclude: [
-              { file: '**/src/**/__tests__/**' },
-              { file: '**/src/**/?(*.){spec|test}.*' },
-              { file: '**/src/setupProxy.*' },
-              { file: '**/src/setupTests.*' },
-            ],
-          },
-          logger: {
-            infrastructure: 'silent',
-          },
-        }),
-      // For now we keep this disabled but in a future update we should review if just setting disableESLintPlugin works
-      // but needs research into the dependencies being installed if they clash with the Skyscanner config
-      // !disableESLintPlugin &&
-      //   new ESLintPlugin({
-      //     // Plugin options
-      //     extensions: ['js', 'mjs', 'jsx', 'ts', 'tsx'],
-      //     formatter: require.resolve('react-dev-utils/eslintFormatter'),
-      //     eslintPath: require.resolve('eslint'),
-      //     failOnError: !(isEnvDevelopment && emitErrorsAsWarnings),
-      //     context: paths.appSrc,
-      //     cache: true,
-      //     cacheLocation: path.resolve(
-      //       paths.appNodeModules,
-      //       '.cache/.eslintcache'
-      //     ),
-      //     // ESLint class options
-      //     cwd: paths.appPath,
-      //     resolvePluginsRelativeTo: __dirname,
-      //     baseConfig: {
-      //       extends: [require.resolve('eslint-config-react-app/base')],
-      //       rules: {
-      //         ...(!hasJsxRuntime && {
-      //           'react/react-in-jsx-scope': 'error',
-      //         }),
-      //       },
-      //     },
-      //   }),
+        useTsChecker(isEnvDevelopment, isEnvProduction, shouldUseSourceMap),
     ].filter(Boolean),
     // Turn off performance processing because we utilize
     // our own hints via the FileSizeReporter
