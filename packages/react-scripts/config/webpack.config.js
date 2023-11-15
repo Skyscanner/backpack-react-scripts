@@ -11,7 +11,6 @@
 const fs = require('fs');
 const path = require('path');
 const webpack = require('webpack');
-const resolve = require('resolve');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
 const InlineChunkHtmlPlugin = require('react-dev-utils/InlineChunkHtmlPlugin');
@@ -27,10 +26,6 @@ const paths = require('./paths');
 const modules = require('./modules');
 const getClientEnvironment = require('./env');
 const ModuleNotFoundPlugin = require('react-dev-utils/ModuleNotFoundPlugin');
-const ForkTsCheckerWebpackPlugin =
-  process.env.TSC_COMPILE_ON_ERROR === 'true'
-    ? require('react-dev-utils/ForkTsCheckerWarningWebpackPlugin')
-    : require('react-dev-utils/ForkTsCheckerWebpackPlugin');
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 const createEnvironmentHash = require('./webpack/persistentCache/createEnvironmentHash');
 
@@ -38,6 +33,8 @@ const isSsr = require('../backpack-addons/ssr/isSsr'); // #backpack-addons ssr
 
 const LoadablePlugin = require('@loadable/webpack-plugin');
 const { getJSLoaders } = require('./loaders/getJSLoaders');
+const { useTsChecker } = require('../backpack-addons/useTsChecker');
+const { getAssetLoaders } = require('./loaders/getAssetLoaders');
 
 // Source maps are resource heavy and can cause out of memory issue for large source files.
 const shouldUseSourceMap = process.env.GENERATE_SOURCEMAP !== 'false';
@@ -62,10 +59,6 @@ const shouldInlineRuntimeChunk = process.env.INLINE_RUNTIME_CHUNK !== 'false';
 // Disabling as they are not currently used in the code see L874
 // const emitErrorsAsWarnings = process.env.ESLINT_NO_DEV_ERRORS === 'true';
 // const disableESLintPlugin = process.env.DISABLE_ESLINT_PLUGIN === 'true';
-
-const imageInlineSizeLimit = parseInt(
-  process.env.IMAGE_INLINE_SIZE_LIMIT || '10000'
-);
 
 // Check if TypeScript is setup
 const useTypeScript = fs.existsSync(paths.appTsConfig);
@@ -399,62 +392,11 @@ module.exports = function (webpackEnv) {
           // match the requirements. When no loader matches it will fall
           // back to the "file" loader at the end of the loader list.
           oneOf: [
-            // TODO: Merge this config once `image/avif` is in the mime-db
-            // https://github.com/jshttp/mime-db
-            {
-              test: [/\.avif$/],
-              type: 'asset',
-              mimetype: 'image/avif',
-              parser: {
-                dataUrlCondition: {
-                  maxSize: imageInlineSizeLimit,
-                },
-              },
-            },
             require('../backpack-addons/amdExcludes'), // #backpack-addons amdExcludes
             // "url" loader works like "file" loader except that it embeds assets
             // smaller than specified limit in bytes as data URLs to avoid requests.
             // A missing `test` is equivalent to a match.
-            {
-              test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/],
-              type: 'asset',
-              parser: {
-                dataUrlCondition: {
-                  maxSize: imageInlineSizeLimit,
-                },
-              },
-            },
-            {
-              test: /\.svg$/,
-              use: [
-                {
-                  loader: require.resolve('@svgr/webpack'),
-                  options: {
-                    prettier: false,
-                    svgo: true,
-                    svgoConfig: {
-                      plugins: [
-                        {
-                          name: 'preset-default',
-                          removeViewBox: false,
-                        },
-                      ],
-                    },
-                    titleProp: true,
-                    ref: true,
-                  },
-                },
-                {
-                  loader: require.resolve('file-loader'),
-                  options: {
-                    name: 'static/media/[name].[contenthash:8].[ext]',
-                  },
-                },
-              ],
-              issuer: {
-                and: [/\.(ts|tsx|js|jsx|md|mdx)$/],
-              },
-            },
+            ...getAssetLoaders(),
             // Process application JS with Babel.
             // The preset includes JSX, Flow, TypeScript, and some ESnext features.
             ...getJSLoaders(
@@ -722,79 +664,7 @@ module.exports = function (webpackEnv) {
         }),
       // TypeScript type checking
       useTypeScript &&
-        new ForkTsCheckerWebpackPlugin({
-          async: isEnvDevelopment,
-          typescript: {
-            typescriptPath: resolve.sync('typescript', {
-              basedir: paths.appNodeModules,
-            }),
-            configOverwrite: {
-              compilerOptions: {
-                sourceMap: isEnvProduction
-                  ? shouldUseSourceMap
-                  : isEnvDevelopment,
-                skipLibCheck: true,
-                inlineSourceMap: false,
-                declarationMap: false,
-                noEmit: true,
-                incremental: true,
-                tsBuildInfoFile: paths.appTsBuildInfoFile,
-              },
-            },
-            context: paths.appPath,
-            diagnosticOptions: {
-              syntactic: true,
-            },
-            mode: 'write-references',
-            // profile: true,
-          },
-          issue: {
-            // This one is specifically to match during CI tests,
-            // as micromatch doesn't match
-            // '../cra-template-typescript/template/src/App.tsx'
-            // otherwise.
-            include: [
-              { file: '../**/src/**/*.{ts,tsx}' },
-              { file: '**/src/**/*.{ts,tsx}' },
-            ],
-            exclude: [
-              { file: '**/src/**/__tests__/**' },
-              { file: '**/src/**/?(*.){spec|test}.*' },
-              { file: '**/src/setupProxy.*' },
-              { file: '**/src/setupTests.*' },
-            ],
-          },
-          logger: {
-            infrastructure: 'silent',
-          },
-        }),
-      // For now we keep this disabled but in a future update we should review if just setting disableESLintPlugin works
-      // but needs research into the dependencies being installed if they clash with the Skyscanner config
-      // !disableESLintPlugin &&
-      //   new ESLintPlugin({
-      //     // Plugin options
-      //     extensions: ['js', 'mjs', 'jsx', 'ts', 'tsx'],
-      //     formatter: require.resolve('react-dev-utils/eslintFormatter'),
-      //     eslintPath: require.resolve('eslint'),
-      //     failOnError: !(isEnvDevelopment && emitErrorsAsWarnings),
-      //     context: paths.appSrc,
-      //     cache: true,
-      //     cacheLocation: path.resolve(
-      //       paths.appNodeModules,
-      //       '.cache/.eslintcache'
-      //     ),
-      //     // ESLint class options
-      //     cwd: paths.appPath,
-      //     resolvePluginsRelativeTo: __dirname,
-      //     baseConfig: {
-      //       extends: [require.resolve('eslint-config-react-app/base')],
-      //       rules: {
-      //         ...(!hasJsxRuntime && {
-      //           'react/react-in-jsx-scope': 'error',
-      //         }),
-      //       },
-      //     },
-      //   }),
+        useTsChecker(isEnvDevelopment, isEnvProduction, shouldUseSourceMap),
     ].filter(Boolean),
     // Turn off performance processing because we utilize
     // our own hints via the FileSizeReporter
