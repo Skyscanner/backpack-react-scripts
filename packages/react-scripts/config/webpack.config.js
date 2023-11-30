@@ -21,7 +21,6 @@ const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
 const InterpolateHtmlPlugin = require('react-dev-utils/InterpolateHtmlPlugin');
 const WorkboxWebpackPlugin = require('workbox-webpack-plugin');
 const ModuleScopePlugin = require('react-dev-utils/ModuleScopePlugin');
-// const ESLintPlugin = require('eslint-webpack-plugin');
 const paths = require('./paths');
 const modules = require('./modules');
 const getClientEnvironment = require('./env');
@@ -55,10 +54,6 @@ const babelRuntimeRegenerator = require.resolve('@babel/runtime/regenerator', {
 // Some apps do not need the benefits of saving a web request, so not inlining the chunk
 // makes for a smoother build process.
 const shouldInlineRuntimeChunk = process.env.INLINE_RUNTIME_CHUNK !== 'false';
-
-// Disabling as they are not currently used in the code see L874
-// const emitErrorsAsWarnings = process.env.ESLINT_NO_DEV_ERRORS === 'true';
-// const disableESLintPlugin = process.env.DISABLE_ESLINT_PLUGIN === 'true';
 
 // Check if TypeScript is setup
 const useTypeScript = fs.existsSync(paths.appTsConfig);

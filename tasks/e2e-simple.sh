@@ -89,8 +89,6 @@ npm test -w react-dev-utils
 
 npm test -w babel-plugin-named-asset-import
 
-npm test -w confusing-browser-globals
-
 # ******************************************************************************
 # First, test the create-react-app development environment.
 # This does not affect our users but makes sure we can develop it.

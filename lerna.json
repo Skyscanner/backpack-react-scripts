@@ -1,8 +1,6 @@
 {
-  "lerna": "2.6.0",
-  "npmClient": "yarn",
-  "useWorkspaces": true,
   "version": "independent",
+  "packages": [],
   "changelog": {
     "repo": "facebook/create-react-app",
     "labels": {
@@ -15,5 +13,6 @@
       "tag: underlying tools": ":hammer: Underlying Tools"
     },
     "cacheDir": ".changelog"
-  }
+  },
+  "$schema": "node_modules/lerna/schemas/lerna-schema.json"
 }
