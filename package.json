@@ -4,6 +4,7 @@
     "packages/*"
   ],
   "scripts": {
+    "build": "cd packages/react-scripts && node bin/react-scripts.js build",
     "changelog": "lerna-changelog",
     "e2e": "tasks/e2e-simple.sh",
     "e2e:docker": "tasks/local-test.sh",
@@ -16,7 +17,6 @@
     "format": "npm run prettier -- --write"
   },
   "devDependencies": {
-    "@skyscanner/eslint-config-skyscanner": "^17.0.0",
     "@testing-library/jest-dom": "^5.15.1",
     "@testing-library/react": "^12.1.2",
     "@testing-library/user-event": "^13.5.0",
