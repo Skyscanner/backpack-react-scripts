@@ -1,8 +1,8 @@
-name: fork_cra5-release
+name: main-release
 
 on:
   push:
-    branches: [fork_cra5]
+    branches: [main]
 
 defaults:
   run:
@@ -17,7 +17,7 @@ jobs:
       - name: Checkout source code
         uses: actions/checkout@v4
         with:
-          ref: fork_cra5
+          ref: main
 
       - name: Use Node.js
         uses: actions/setup-node@v3
