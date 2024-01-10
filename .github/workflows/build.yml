@@ -2,9 +2,9 @@ name: Build
 
 on:
   push:
-    branches: [fork_cra5]
+    branches: [main]
   pull_request:
-    branches: [fork_cra5]
+    branches: [main]
 
 jobs:
   build:

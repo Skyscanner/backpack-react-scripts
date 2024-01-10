@@ -252,6 +252,7 @@ module.exports = function (webpackEnv) {
     },
     cache: {
       type: 'filesystem',
+      name: 'SsrCache',
       version: createEnvironmentHash(env.raw),
       cacheDirectory: paths.appWebpackCache,
       store: 'pack',
