@@ -51,6 +51,15 @@ const paths = require('../config/paths');
 const appPackageJson = require(paths.appPackageJson);
 const bpkReactScriptsConfig = appPackageJson['backpack-react-scripts'] || {};
 
+const backpackStylesCacheGroup = {
+  name: 'bpk-styles',
+  type: 'css/mini-extract',
+  chunks: 'all',
+  enforce: true,
+  test: /[\\/]node_modules[\\/]@skyscanner[\\/]backpack-web[\\/]/,
+  priority: 1
+};
+
 module.exports = () => {
   let splitChunksConfig = {};
 
@@ -83,6 +92,13 @@ module.exports = () => {
         );
       }
     }
+  }
+
+  if (bpkReactScriptsConfig.__unstableEnableBpkStylesChunk) {
+    if (!splitChunksConfig.cacheGroups) {
+      splitChunksConfig.cacheGroups = {};
+    }
+    splitChunksConfig.cacheGroups.bpkStyles = backpackStylesCacheGroup;
   }
 
   return {
