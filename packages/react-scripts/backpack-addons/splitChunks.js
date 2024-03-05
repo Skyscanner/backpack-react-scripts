@@ -57,6 +57,7 @@ const backpackStylesCacheGroup = {
   chunks: 'all',
   enforce: true,
   test: /[\\/]node_modules[\\/]@skyscanner[\\/]backpack-web[\\/]/,
+  priority: 1
 };
 
 module.exports = () => {
