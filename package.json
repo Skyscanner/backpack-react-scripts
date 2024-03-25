@@ -17,6 +17,7 @@
     "screencast:error": "svg-term --cast jyu19xGl88FQ3poMY8Hbmfw8y --out screencast-error.svg --window --at 12000 --no-cursor",
     "alex": "alex .",
     "test:integration": "jest test/integration",
+    "test:addons": "jest packages/react-scripts/backpack-addons",
     "test": "cd packages/react-scripts && node bin/react-scripts.js test",
     "eslint": "eslint .",
     "prettier": "prettier .",

@@ -57,7 +57,7 @@ const backpackStylesCacheGroup = {
   chunks: 'all',
   enforce: true,
   test: /[\\/]node_modules[\\/]@skyscanner[\\/]backpack-web[\\/]/,
-  priority: 1
+  priority: 1,
 };
 
 module.exports = () => {
@@ -94,7 +94,7 @@ module.exports = () => {
     }
   }
 
-  if (bpkReactScriptsConfig.__unstableEnableBpkStylesChunk) {
+  if (bpkReactScriptsConfig.enableBpkStylesChunk) {
     if (!splitChunksConfig.cacheGroups) {
       splitChunksConfig.cacheGroups = {};
     }
