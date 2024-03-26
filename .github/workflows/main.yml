@@ -3,6 +3,8 @@ name: main-release
 on:
   push:
     branches: [main]
+  release:
+    types: [ published ]
 
 defaults:
   run:
@@ -35,12 +37,23 @@ jobs:
 
       - name: Build
         run: npm run build
-
-      - name: Publish NPM package
+      
+      - name: Publish dev NPM package
+        if: ${{ github.event_name != 'release' && github.ref_name != github.event.repository.default_branch }}
         run: |
           cd packages/react-scripts
           npm version prerelease --preid=$BUILD_VERSION-dev --no-git-tag-version
           npm publish --tag alpha
         env:
           BUILD_VERSION: ${{ github.run_number }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Publish release NPM package
+        if: ${{ github.event_name == 'release' }}
+        run: |
+          cd packages/react-scripts
+          npm version $RELEASE_VERSION --no-git-tag-version
+          npm publish
+        env:
+          RELEASE_VERSION: ${{ github.event.release.tag_name }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
