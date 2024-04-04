@@ -27,6 +27,7 @@
   "types": "./lib/react-app.d.ts",
   "dependencies": {
     "@babel/core": "^7.23.2",
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@loadable/babel-plugin": "^5.16.1",
     "@loadable/webpack-plugin": "^5.15.2",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.11",
