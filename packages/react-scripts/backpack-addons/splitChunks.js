@@ -56,7 +56,7 @@ const backpackStylesCacheGroup = {
   type: 'css/mini-extract',
   chunks: 'all',
   enforce: true,
-  test: /[\\/]node_modules[\\/](@skyscanner[\\/]backpack-web|@skyscanner-internal[\\/]bpk-logos)[\\/]/,
+  test: /[\\/]node_modules[\\/](@skyscanner[\\/]backpack-web[\\/]|@skyscanner-internal[\\/]bpk-logos)/,
   priority: 1,
 };
 
