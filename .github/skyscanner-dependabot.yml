@@ -1,0 +1,21 @@
+version: 2
+updates:
+  - package-ecosystem: "docker"
+    directory: "/"
+    ignore:
+      # Major Skyscanner language updates typically require additional changes
+      - dependency-name: "skyscanner/node*"
+        update-types: ["version-update:semver-major"]
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    groups:
+      all-actions:
+        patterns:
+          - "*"
+        update-types:
+          - "patch"
+          - "minor"
+
+  - package-ecosystem: "npm"
+    directory: "/"
