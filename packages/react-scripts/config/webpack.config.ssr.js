@@ -34,6 +34,7 @@ const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin'
 const createEnvironmentHash = require('./webpack/persistentCache/createEnvironmentHash');
 
 const isSsr = require('../backpack-addons/ssr/isSsr'); // #backpack-addons ssr
+const isLoadable = require('../backpack-addons/ssr/isLocalComponents'); // #backpack-addons ssr
 
 // Just for the case that `ssr.js` exists in `src` folder but not in SSR mode
 const needBuildSsr = !isSsr() && fs.existsSync(paths.appSsrJs);
@@ -351,7 +352,9 @@ module.exports = function (webpackEnv) {
         .map(ext => `.${ext}`)
         .filter(ext => useTypeScript || !ext.includes('ts')),
       alias: {
-        '@loadable/component': require.resolve('@loadable/component'),
+        ...(isLoadable()
+          ? { '@loadable/component': require.resolve('@loadable/component') }
+          : {}),
         // Support React Native Web
         // https://www.smashingmagazine.com/2016/08/a-glimpse-into-the-future-with-react-native-for-web/
         'react-native': 'react-native-web',
