@@ -26,7 +26,7 @@ const restrictedGlobals = require('confusing-browser-globals');
 module.exports = {
   extends: [require.resolve('./base')],
 
-  plugins: ['import', 'flowtype', 'jsx-a11y', 'react-hooks'],
+  plugins: ['import', 'ft-flow', 'jsx-a11y', 'react-hooks'],
 
   overrides: [
     {
@@ -284,8 +284,8 @@ module.exports = {
     'react-hooks/rules-of-hooks': 'error',
 
     // https://github.com/gajus/eslint-plugin-flowtype
-    'flowtype/define-flow-type': 'warn',
-    'flowtype/require-valid-file-annotation': 'warn',
-    'flowtype/use-flow-type': 'warn',
+    'ft-flow/define-flow-type': 'warn',
+    'ft-flow/require-valid-file-annotation': 'warn',
+    'ft-flow/use-flow-type': 'warn',
   },
 };
