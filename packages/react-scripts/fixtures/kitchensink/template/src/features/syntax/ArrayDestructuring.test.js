@@ -6,14 +6,14 @@
  */
 
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import ArrayDestructuring from './ArrayDestructuring';
 
 describe('array destructuring', () => {
   it('renders without crashing', () => {
     const div = document.createElement('div');
     return new Promise(resolve => {
-      ReactDOM.render(<ArrayDestructuring onReady={resolve} />, div);
+      createRoot(div).render(<ArrayDestructuring onReady={resolve} />);
     });
   });
 });

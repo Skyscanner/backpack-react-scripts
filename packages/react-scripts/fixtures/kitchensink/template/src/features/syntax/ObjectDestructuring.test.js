@@ -6,14 +6,14 @@
  */
 
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import ObjectDestructuring from './ObjectDestructuring';
 
 describe('object destructuring', () => {
   it('renders without crashing', () => {
     const div = document.createElement('div');
     return new Promise(resolve => {
-      ReactDOM.render(<ObjectDestructuring onReady={resolve} />, div);
+      createRoot(div).render(<ObjectDestructuring onReady={resolve} />);
     });
   });
 });

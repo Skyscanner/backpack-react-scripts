@@ -6,14 +6,14 @@
  */
 
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import CustomInterpolation from './CustomInterpolation';
 
 describe('custom interpolation', () => {
   it('renders without crashing', () => {
     const div = document.createElement('div');
     return new Promise(resolve => {
-      ReactDOM.render(<CustomInterpolation onReady={resolve} />, div);
+      createRoot(div).render(<CustomInterpolation onReady={resolve} />);
     });
   });
 });

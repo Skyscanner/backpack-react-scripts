@@ -6,12 +6,12 @@
  */
 
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import ImageInclusion from './ImageInclusion';
 
 describe('image inclusion', () => {
   it('renders without crashing', () => {
     const div = document.createElement('div');
-    ReactDOM.render(<ImageInclusion />, div);
+    createRoot(div).render(<ImageInclusion />);
   });
 });

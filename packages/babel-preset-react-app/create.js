@@ -95,8 +95,8 @@ module.exports = function (api, opts, env) {
           development: isEnvDevelopment || isEnvTest,
           // Will use the native built-in instead of trying to polyfill
           // behavior for any plugins that require one.
-          ...(opts.runtime !== 'automatic' ? { useBuiltIns: true } : {}),
-          runtime: opts.runtime || 'classic',
+          ...(opts.runtime === 'classic' ? { useBuiltIns: true } : {}),
+          runtime: opts.runtime || 'automatic',
         },
       ],
       isTypeScriptEnabled && [require('@babel/preset-typescript').default],

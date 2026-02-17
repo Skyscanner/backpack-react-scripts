@@ -1,10 +1,10 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import SvgInCss from './SvgInCss';
 
 describe('svg in css', () => {
   it('renders without crashing', () => {
     const div = document.createElement('div');
-    ReactDOM.render(<SvgInCss />, div);
+    createRoot(div).render(<SvgInCss />);
   });
 });
