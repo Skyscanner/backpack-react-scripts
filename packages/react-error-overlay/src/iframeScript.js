@@ -5,15 +5,15 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import 'react-app-polyfill/ie9';
-import React, { createContext } from 'react';
-import ReactDOM from 'react-dom';
+import { createContext } from 'react';
+import ReactDOM from 'react-dom/client';
 import CompileErrorContainer from './containers/CompileErrorContainer';
 import RuntimeErrorContainer from './containers/RuntimeErrorContainer';
 import { overlayStyle } from './styles';
 import { applyStyles, getTheme } from './utils/dom/css';
 
 let iframeRoot = null;
+let root = null;
 const theme = getTheme();
 export const ThemeContext = createContext();
 
@@ -51,11 +51,16 @@ window.updateContent = function updateContent(errorOverlayProps) {
   let renderedElement = render(errorOverlayProps);
 
   if (renderedElement === null) {
-    ReactDOM.unmountComponentAtNode(iframeRoot);
+    if (root) {
+      root.unmount();
+      root = null;
+    }
     return false;
   }
-  // Update the overlay
-  ReactDOM.render(renderedElement, iframeRoot);
+  if (!root) {
+    root = ReactDOM.createRoot(iframeRoot);
+  }
+  root.render(renderedElement);
   return true;
 };
 

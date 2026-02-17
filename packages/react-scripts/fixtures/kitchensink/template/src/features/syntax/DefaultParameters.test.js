@@ -6,14 +6,14 @@
  */
 
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import DefaultParameters from './DefaultParameters';
 
 describe('default parameters', () => {
   it('renders without crashing', () => {
     const div = document.createElement('div');
     return new Promise(resolve => {
-      ReactDOM.render(<DefaultParameters onReady={resolve} />, div);
+      createRoot(div).render(<DefaultParameters onReady={resolve} />);
     });
   });
 });

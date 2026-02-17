@@ -6,12 +6,12 @@
  */
 
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import ShellEnvVariables from './ShellEnvVariables';
 
 describe('shell env variables', () => {
   it('renders without crashing', () => {
     const div = document.createElement('div');
-    ReactDOM.render(<ShellEnvVariables />, div);
+    createRoot(div).render(<ShellEnvVariables />);
   });
 });

@@ -6,12 +6,12 @@
  */
 
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import App from './App';
 
 test('loads modules absolutely with baseUrl', () => {
   const div = document.createElement('div');
   return new Promise(resolve => {
-    ReactDOM.render(<App onReady={resolve} />, div);
+    createRoot(div).render(<App onReady={resolve} />);
   });
 });

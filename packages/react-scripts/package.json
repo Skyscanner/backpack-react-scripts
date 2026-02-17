@@ -86,15 +86,15 @@
     "workbox-webpack-plugin": "^6.6.1"
   },
   "devDependencies": {
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2"
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4"
   },
   "optionalDependencies": {
     "fsevents": "^2.3.2"
   },
   "peerDependencies": {
     "node-sass": ">=7",
-    "react": ">= 17",
+    "react": ">= 18",
     "sass-embedded": "*",
     "typescript": ">= 4.4.4"
   },

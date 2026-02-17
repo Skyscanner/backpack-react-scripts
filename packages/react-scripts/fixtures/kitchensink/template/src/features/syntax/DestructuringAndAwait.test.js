@@ -6,14 +6,14 @@
  */
 
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import DestructuringAndAwait from './DestructuringAndAwait';
 
 describe('destructuring and await', () => {
   it('renders without crashing', () => {
     const div = document.createElement('div');
     return new Promise(resolve => {
-      ReactDOM.render(<DestructuringAndAwait onReady={resolve} />, div);
+      createRoot(div).render(<DestructuringAndAwait onReady={resolve} />);
     });
   });
 });

@@ -6,12 +6,12 @@
  */
 
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import SassInclusion from './SassInclusion';
 
 describe('sass inclusion', () => {
   it('renders without crashing', () => {
     const div = document.createElement('div');
-    ReactDOM.render(<SassInclusion />, div);
+    createRoot(div).render(<SassInclusion />);
   });
 });

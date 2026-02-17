@@ -6,7 +6,7 @@
  */
 
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { test, version } from 'test-integrity';
 import LinkedModules from './LinkedModules';
 
@@ -18,6 +18,6 @@ describe('linked modules', () => {
 
   it('renders without crashing', () => {
     const div = document.createElement('div');
-    ReactDOM.render(<LinkedModules />, div);
+    createRoot(div).render(<LinkedModules />);
   });
 });
