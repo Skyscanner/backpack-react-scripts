@@ -57,5 +57,9 @@
     "*.{js,json,yml,yaml,css,scss,ts,tsx,md}": [
       "prettier --write"
     ]
+  },
+  "overrides": {
+    "serialize-javascript": "7.0.5",
+    "bfj": "7.0.2"
   }
 }
