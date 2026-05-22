@@ -1,0 +1,70 @@
+# Note: Dependabot security updates (driven by GitHub security advisories)
+# bypass the cooldown and other settings configured below.
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directories:
+      - "/"
+      - "/docusaurus/website"
+      - "/packages/babel-plugin-named-asset-import"
+      - "/packages/babel-preset-react-app"
+      - "/packages/confusing-browser-globals"
+      - "/packages/cra-template"
+      - "/packages/cra-template-typescript"
+      - "/packages/create-react-app"
+      - "/packages/eslint-config-react-app"
+      - "/packages/react-app-polyfill"
+      - "/packages/react-dev-utils"
+      - "/packages/react-error-overlay"
+      - "/packages/react-scripts"
+      - "/test/fixtures/boostrap-sass"
+      - "/test/fixtures/builds-with-multiple-runtimes"
+      - "/test/fixtures/global-scss-asset-resolution"
+      - "/test/fixtures/issue-5176-flow-class-properties"
+      - "/test/fixtures/issue-5947-not-typescript"
+      - "/test/fixtures/jsconfig"
+      - "/test/fixtures/mjs-support"
+      - "/test/fixtures/relative-paths"
+      - "/test/fixtures/typescript"
+      - "/test/fixtures/typescript-advanced"
+      - "/test/fixtures/typescript-typecheck"
+      - "/test/fixtures/webpack-message-formatting"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 5
+    groups:
+      skyscanner-internal:
+        patterns:
+          - "@skyscanner/*"
+          - "@skyscanner-internal/*"
+      external-dependencies:
+        patterns:
+          - "*"
+        exclude-patterns:
+          - "@skyscanner/*"
+          - "@skyscanner-internal/*"
+    cooldown:
+      default-days: 30
+      exclude:
+        - "@skyscanner/*"
+        - "@skyscanner-internal/*"
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "tuesday"
+    open-pull-requests-limit: 5
+    groups:
+      skyscanner-internal:
+        patterns:
+          - "skyscanner/*"
+      external-dependencies:
+        patterns:
+          - "*"
+        exclude-patterns:
+          - "skyscanner/*"
+    cooldown:
+      default-days: 30
+      exclude:
+        - "skyscanner/*"
