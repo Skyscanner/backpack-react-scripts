@@ -114,7 +114,6 @@ module.exports = function (proxy, allowedHost) {
       disableDotRule: true,
       index: paths.publicUrlOrPath,
     },
-    // `proxy` is run between `before` and `after` `webpack-dev-server` hooks
     proxy,
     // webpack-dev-server v5 replaced onBeforeSetupMiddleware/onAfterSetupMiddleware with setupMiddlewares.
     setupMiddlewares(middlewares, devServer) {
