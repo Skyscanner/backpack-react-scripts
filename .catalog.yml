@@ -1,0 +1,11 @@
+---
+version: '1'
+type: library
+component:
+  name: backpack-react-scripts
+  owner: beetlejuice
+  description: Create React + Backpack apps with no build configuration.
+  personalDataHandling: none
+  soxScope: False
+  paymentProcessing: False
+  serviceClass: economy-class
